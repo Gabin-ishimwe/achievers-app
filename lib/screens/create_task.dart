@@ -1,27 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Center(
-        child: CreateTaskPage(),
-      ),
-    );
-  }
-}
-
 // CreateTaskPage is a stateful widget that holds a page where the user can create a task
 class CreateTaskPage extends StatefulWidget {
   const CreateTaskPage({super.key});
@@ -42,76 +20,29 @@ class _CreateTaskPage extends State<CreateTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          // adds margin to create space between the screen edges and the content
+        // adds margin to create space between the screen edges and the content
           margin: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              //adds space at the top
-              Padding(padding: EdgeInsets.symmetric(vertical: 20)),
               // add the title on the page
               Text(
-                "Create New Task",
+                "Add New Task",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               // adds space between the title and the following text field
-              Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a text field that receives user input for the title of the task
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Task status",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      // labelText: 'Name',
-                      hintText: 'Task title',
-                      hintStyle: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey[600],
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.grey.withOpacity(0)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.grey.withOpacity(0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0x4C05BE).withOpacity(1)),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey.withOpacity(0.1),
-                      hoverColor: Colors.grey.withOpacity(0),
-                    ),
-                  ),
-                ],
+              TextField(
+                decoration: InputDecoration(
+                    labelText: "Title", border: OutlineInputBorder()),
               ),
               // adds space between the text fields
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a text field that receives user input for the description of the task
-              TextFormField(
+              TextField(
                 decoration: InputDecoration(
-                  // labelText: 'Name',
-                  hintText: 'Enter your name',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey,
-                  hoverColor: Colors.grey,
-                ),
+                    labelText: "Description", border: OutlineInputBorder()),
               ),
               // adds space after the text field
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
@@ -128,6 +59,7 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                   // a row for a task status option
 
                   // a row for a task status option
+
                 ],
               ),
               // adds a space after before the following column
