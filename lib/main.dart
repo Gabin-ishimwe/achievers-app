@@ -1,4 +1,6 @@
+import 'package:achievers_app/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Task Achievers App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Center(
-        child: Text("Achievers App"),
-      ),
+          primarySwatch: Colors.deepPurple,
+          textTheme:
+              GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
+      home: OnboardingScreen(),
     );
   }
 }
