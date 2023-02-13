@@ -1,3 +1,4 @@
+import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../models/onboarding_model.dart';
@@ -40,11 +41,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView.builder(
                   controller: _controller,
                   onPageChanged: (index) => {
-                        setState(
-                          () {
-                            currentIndex = index;
-                          },
-                        )
+                        print("index ${index}"),
+                        if (index == onboardContents.length - 1)
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInScreen()))
+                          }
+                        else
+                          {
+                            setState(
+                              () {
+                                currentIndex = index;
+                              },
+                            )
+                          }
                       },
                   itemCount: onboardContents.length,
                   itemBuilder: (_, index) {
