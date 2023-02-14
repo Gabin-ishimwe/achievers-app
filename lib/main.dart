@@ -1,4 +1,6 @@
 import 'package:achievers_app/screens/onboarding_screen.dart';
+import 'package:achievers_app/screens/sign_in_screen.dart';
+import 'package:achievers_app/screens/sign_up_screen.dart';
 import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
