@@ -1,4 +1,5 @@
 import 'package:achievers_app/widgets/create_task_widget.dart';
+import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -11,15 +12,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List homeWidgets = [
+    HomeScreenWidget(),
     Center(
-      child: Text("Home page"),
-    ),
-    Center(
-      child: Text("All task page"),
+      child: Text("All task page (To be implemented)"),
     ),
     CreateTaskWidget(),
     Center(
-      child: Text("statistics page"),
+      child: Text("statistics page (To be implemented)"),
     ),
     ProfileWidget(),
   ];
