@@ -1,3 +1,4 @@
+import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/screens/onboarding_screen.dart';
 import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:achievers_app/screens/sign_up_screen.dart';
