@@ -1,4 +1,8 @@
+import 'package:achievers_app/screens/onboarding_screen.dart';
+import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Task Achievers App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Center(
-        child: CreateTaskPage(),
-      ),
+          primarySwatch: Colors.deepPurple,
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
+      home: CreateTaskPage(),
     );
   }
 }
@@ -35,7 +38,24 @@ class _CreateTaskPage extends State<CreateTaskPage> {
   // instance of the Status enum
 
   //a variable that will hold the priority that the user gives a task
-  var priority = 0.0;
+  var sessions = 0.0;
+  var short_break = 0.0;
+  var long_break = 0.0;
+
+  final List<Map<String, dynamic>> _items = [
+    {
+      'value': 'school',
+      'label': 'School',
+    },
+    {
+      'value': 'health',
+      'label': 'Health',
+    },
+    {
+      'value': 'leisure',
+      'label': 'Leisure',
+    },
+  ];
 
   // overrides the build function of a state object
   @override
@@ -48,23 +68,26 @@ class _CreateTaskPage extends State<CreateTaskPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               //adds space at the top
-              Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // add the title on the page
               Text(
                 "Create New Task",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
               ),
               // adds space between the title and the following text field
-              Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a text field that receives user input for the title of the task
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Task status",
-                    style: TextStyle(fontSize: 16),
+                    "Title",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   TextFormField(
                     decoration: InputDecoration(
                       // labelText: 'Name',
@@ -73,6 +96,7 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
+                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.grey.withOpacity(0)),
@@ -92,47 +116,71 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                   ),
                 ],
               ),
-              // adds space between the text fields
+              // Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              // Row(children: [
+              //   Column(children: [
+              //     Text(
+              //       "Date",
+              //       style: TextStyle(
+              //           fontSize: 14,
+              //           color: Colors.black.withOpacity(.85),
+              //           fontWeight: FontWeight.w600),
+              //     ),
+              //     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              //   ]),
+              //   Column(children: [
+              //     Text(
+              //       "Start time",
+              //       style: TextStyle(
+              //           fontSize: 14,
+              //           color: Colors.black.withOpacity(.85),
+              //           fontWeight: FontWeight.w600),
+              //     ),
+              //     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              //   ]),
+              // ]),
+
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-              // a text field that receives user input for the description of the task
-              TextFormField(
-                decoration: InputDecoration(
-                  // labelText: 'Name',
-                  hintText: 'Enter your name',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey,
-                  hoverColor: Colors.grey,
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  "Select Category",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black.withOpacity(.85),
+                      fontWeight: FontWeight.w600),
                 ),
-              ),
-              // adds space after the text field
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-
-              // a column that holds the task status options
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // a label for the task status options
-                  Text(
-                    "Task status",
-                    style: TextStyle(fontSize: 16),
+                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  hintText: 'Category',
+                  items: _items,
+                  onChanged: (val) => print(val),
+                  onSaved: (val) => print(val),
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey[600],
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0x4C05BE).withOpacity(1)),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.withOpacity(0.1),
                   ),
-                  // a row for a task status option
+                )
+                // adds a space after before the following column
+              ]),
 
-                  // a row for a task status option
-                ],
-              ),
-              // adds a space after before the following column
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-
               // a column that holds the task priority slider
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,25 +188,127 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                 children: [
                   // a label for the slider
                   Text(
-                    "Task priority",
-                    style: TextStyle(fontSize: 16),
+                    "Working Sessions",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
                   ),
-
+                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   // a slider that will be used to specify the task priority
-                  Slider(
-                    value: priority,
-                    onChanged: ((value) {
-                      setState(() {
-                        priority = value;
-                      });
-                    }),
-                    min: 0,
-                    max: 5,
-                    divisions: 5,
-                    label: "$priority",
-                    thumbColor: Color(0xFF476EBE),
-                    activeColor: Color(0xFF476EBE),
+                  SliderTheme(
+                    data: SliderThemeData(
+                      thumbColor: Colors.blue,
+                      activeTrackColor: Colors.lightBlue[300],
+                      inactiveTrackColor: Colors.grey[300],
+                      valueIndicatorColor: Colors.blue,
+                      showValueIndicator: ShowValueIndicator.always,
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      valueIndicatorTextStyle:
+                          TextStyle(fontSize: 12, color: Colors.white),
+                      trackHeight: 5,
+                    ),
+                    child: Slider(
+                      value: sessions,
+                      onChanged: ((value) {
+                        setState(() {
+                          sessions = value;
+                        });
+                      }),
+                      min: 0,
+                      max: 8,
+                      divisions: 8,
+                      label: "$sessions",
+                    ),
+                  )
+                ],
+              ),
+
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              // a column that holds the task priority slider
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // a label for the slider
+                  Text(
+                    "Short Break",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
                   ),
+                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  // a slider that will be used to specify the task priority
+                  SliderTheme(
+                    data: SliderThemeData(
+                      thumbColor: Colors.blue,
+                      activeTrackColor: Colors.lightBlue[300],
+                      inactiveTrackColor: Colors.grey[300],
+                      valueIndicatorColor: Colors.blue,
+                      showValueIndicator: ShowValueIndicator.always,
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      valueIndicatorTextStyle:
+                          TextStyle(fontSize: 12, color: Colors.white),
+                      trackHeight: 5,
+                    ),
+                    child: Slider(
+                      value: short_break,
+                      onChanged: ((value) {
+                        setState(() {
+                          short_break = value;
+                        });
+                      }),
+                      min: 0,
+                      max: 10,
+                      divisions: 10,
+                      label: "$short_break",
+                    ),
+                  )
+                ],
+              ),
+
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              // a column that holds the task priority slider
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // a label for the slider
+                  Text(
+                    "Long Break",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  // a slider that will be used to specify the task priority
+                  SliderTheme(
+                    data: SliderThemeData(
+                      thumbColor: Colors.blue,
+                      activeTrackColor: Colors.lightBlue[300],
+                      inactiveTrackColor: Colors.grey[300],
+                      valueIndicatorColor: Colors.blue,
+                      showValueIndicator: ShowValueIndicator.always,
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      valueIndicatorTextStyle:
+                          TextStyle(fontSize: 12, color: Colors.white),
+                      trackHeight: 5,
+                    ),
+                    child: Slider(
+                      value: long_break,
+                      onChanged: ((value) {
+                        setState(() {
+                          long_break = value;
+                        });
+                      }),
+                      min: 0,
+                      max: 15,
+                      divisions: 15,
+                      label: "$long_break",
+                    ),
+                  )
                 ],
               ),
               // adds space before the button
@@ -167,9 +317,13 @@ class _CreateTaskPage extends State<CreateTaskPage> {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(15),
-                    backgroundColor: Color(0xFF476EBE)),
-                child: const Text("Add new task"),
+                  padding: const EdgeInsets.all(20),
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: const Text("Create new task"),
               )
             ],
           )),
