@@ -1,5 +1,5 @@
 import 'package:achievers_app/screens/create_task.dart';
-import 'package:achievers_app/screens/profile.dart';
+import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -121,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
+                              builder: (context) => HomeScreen()));
                     },
                     child: Text(
                       "Sign In",
