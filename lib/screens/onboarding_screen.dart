@@ -41,28 +41,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView.builder(
                   controller: _controller,
                   onPageChanged: (index) => {
-                        print("index ${index}"),
-                        if (index == onboardContents.length - 1)
-                          {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignInScreen()))
-                          }
-                        else
-                          {
-                            setState(
-                              () {
-                                currentIndex = index;
-                              },
-                            )
-                          }
+                        setState(
+                          () {
+                            currentIndex = index;
+                          },
+                        )
                       },
                   itemCount: onboardContents.length,
                   itemBuilder: (_, index) {
                     return Column(children: [
                       Expanded(
-                        flex: 6, // 50 % of screen
+                        flex: 5, // 50 % of screen
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
@@ -78,6 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           padding: EdgeInsets.only(left: 20, right: 20),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
                                   onboardContents[index].description,
@@ -102,7 +92,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                               color: Colors.deepPurple
                                               // color: const Color.fromARGB(255, 235, 53, 34),
                                               )),
-                                    ))
+                                    )),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (currentIndex ==
+                                        onboardContents.length - 1) {
+                                      // navigate on another screen
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: ((context) {
+                                        return const SignInScreen();
+                                      })));
+                                    }
+                                    _controller.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 400),
+                                        curve: Curves.ease);
+                                  },
+                                  child: Text(
+                                    currentIndex == onboardContents.length - 1
+                                        ? "Continue"
+                                        : "Next",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      padding: EdgeInsets.all(15)),
+                                )
                               ]),
                         ),
                       )

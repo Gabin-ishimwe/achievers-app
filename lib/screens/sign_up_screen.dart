@@ -1,3 +1,4 @@
+import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.black,
                       ),
                       onTap: () {
-                        print("inkwell widget");
+                        Navigator.pop(context);
                       },
                       splashColor: Colors.transparent,
                     ),
@@ -154,6 +155,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Text("Already have an account?"),
                       Padding(padding: EdgeInsets.only(right: 5)),
                       InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignInScreen()));
+                        },
                         splashColor: Colors.transparent,
                         child: Text(
                           "Login",
