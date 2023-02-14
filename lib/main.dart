@@ -1,5 +1,8 @@
 import 'package:achievers_app/screens/home.dart';
 import 'package:achievers_app/screens/onboarding_screen.dart';
+import 'package:achievers_app/screens/sign_in_screen.dart';
+import 'package:achievers_app/screens/sign_up_screen.dart';
+import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,9 +21,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
-          textTheme:
-              GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: HomeScreen(),
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
+      home: SplashScreen(),
     );
   }
 }
