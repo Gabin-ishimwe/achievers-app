@@ -121,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CreateTaskPage()));
+                              builder: (context) => ProfilePage()));
                     },
                     child: Text(
                       "Sign In",
