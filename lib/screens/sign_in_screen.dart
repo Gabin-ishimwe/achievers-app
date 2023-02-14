@@ -1,3 +1,5 @@
+import 'package:achievers_app/screens/create_task.dart';
+import 'package:achievers_app/screens/profile.dart';
 import 'package:achievers_app/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -115,9 +117,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     height: 40,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()));
+                    },
                     child: Text(
-                      "Sign up",
+                      "Sign In",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     style: ElevatedButton.styleFrom(
