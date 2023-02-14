@@ -119,9 +119,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfilePage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreateTaskPage()));
                     },
                     child: Text(
                       "Sign In",
