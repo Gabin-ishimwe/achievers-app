@@ -10,8 +10,10 @@ class EditProfileWidget extends StatefulWidget {
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
   var formState = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  var emailController = TextEditingController(text: "g.ishimwe@alustudent.com");
+  var fullNameController = TextEditingController(text: "Gabin ISHIMWE"); 
+  var preferredNameController = TextEditingController(text: "Gabin");  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -105,7 +107,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               height: 10,
                             ),
                             TextFormField(
-                              controller: emailController,
+                              controller: fullNameController,
                               decoration: InputDecoration(
                                   prefixIconColor: Color(0xFFC1C1C1),
                                   fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
@@ -134,7 +136,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               height: 10,
                             ),
                             TextFormField(
-                              controller: passwordController,
+                              controller: preferredNameController,
                               decoration: InputDecoration(
                                   prefixIconColor: Color(0xFFC1C1C1),
                                   fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
@@ -163,7 +165,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               height: 10,
                             ),
                             TextFormField(
-                              controller: passwordController,
+                              controller: emailController,
                               decoration: InputDecoration(
                                   prefixIconColor: Color(0xFFC1C1C1),
                                   fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
@@ -181,10 +183,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                             SizedBox(
                               height: 40,
                             ),
-                            
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.center, 
-                              mainAxisAlignment: MainAxisAlignment.center, 
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
                                   width: 150,
