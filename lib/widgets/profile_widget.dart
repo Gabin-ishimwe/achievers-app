@@ -1,3 +1,5 @@
+import 'package:achievers_app/screens/sign_in_screen.dart';
+import 'package:achievers_app/widgets/edit_profile_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -61,18 +63,21 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
-                                shape: BoxShape.rectangle, 
+                                shape: BoxShape.rectangle,
                                 color: Colors.deepPurple,
                               ),
                               child: IconButton(
-                                onPressed: () {
-                                  // do something
-                                },
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                )
-                              ))),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditProfileWidget()));
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  )))),
                     ],
                   ),
                   SizedBox(height: 25),
@@ -134,7 +139,99 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ])),
                 // SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text("Logout",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.deepPurple)),
+                              ),
+                              SizedBox(height: 25),
+                              Divider(
+                                  indent: 40,
+                                  endIndent: 40,
+                                  thickness: 2,
+                                  color: Colors.black.withOpacity(.20)),
+                              SizedBox(height: 30),
+                              Text("Are you sure you want to logout?",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black.withOpacity(.60))),
+                              SizedBox(height: 50),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileWidget()));
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.deepPurple),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.deepPurple[100],
+                                          elevation: 0,
+                                          padding: const EdgeInsets.all(15),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 150,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SignInScreen()));
+                                      },
+                                      child: Text(
+                                        "Logout",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.deepPurple,
+                                          elevation: 0,
+                                          padding: const EdgeInsets.all(15),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 60),
+                            ],
+                          );
+                        });
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 120),
