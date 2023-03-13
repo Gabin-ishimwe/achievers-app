@@ -1,6 +1,9 @@
+import 'package:achievers_app/repositories/auth_repository.dart';
 import 'package:achievers_app/screens/create_task.dart';
 import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/sign_up_screen.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -15,6 +18,17 @@ class _SignInScreenState extends State<SignInScreen> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   bool isChecked = false;
+  bool isLoading = false;
+
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await AuthRepository().createrWithEmailAndPassword(
+          emailController.text.trim(), passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,6 +72,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   TextFormField(
                     controller: emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (!EmailValidator.validate(
+                          emailController.text.trim())) {
+                        return "Invalid Email";
+                      } else if (value!.isEmpty) {
+                        return "Email required";
+                      }
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.email),
                         prefixIconColor: Color(0xFFC1C1C1),
@@ -77,6 +100,14 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   TextFormField(
                     controller: passwordController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required";
+                      } else if (value.length < 6) {
+                        return "Password must be greater than 6 characters";
+                      }
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.lock),
                         prefixIconColor: Color(0xFFC1C1C1),
@@ -118,15 +149,23 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()));
+                      if (formState.currentState!.validate()) {
+                        signInWithEmailAndPassword();
+                      }
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => HomeScreen()));
                     },
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child: isLoading
+                        ? SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator())
+                        : Text(
+                            "Sign In",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         padding: const EdgeInsets.all(15),
