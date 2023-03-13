@@ -11,5 +11,8 @@
   <img src="./assets/readme/create_task.jpeg" width="100" />
     <img src="./assets/readme/task_page.jpeg" width="100" />
   <img src="./assets/readme/profile_page.jpeg" width="100" />
+  <img src="./assets/readme/statistics.png" width="100" />
+  <img src="./assets/readme/completion.png" width="100" />
+  <img src="./assets/readme/daily_task.png" width="100" />
 
 </p>
