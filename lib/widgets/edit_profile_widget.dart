@@ -14,33 +14,38 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: false,
-            title: Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: Image.asset('assets/profile/logo.png'),
-                    ),
-                    Text(
-                      'Profile',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    )
-                  ],
-                )),
+        preferredSize: Size.fromHeight(60),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: false,
+          title: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              // child: Icon(Icons.arrow_back, color: Colors.black,),
+              Text(
+                'Edit Profile',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              )
+            ],
           ),
         ),
+      ),
         body: SingleChildScrollView(
           child: Container(
             child: Column(
