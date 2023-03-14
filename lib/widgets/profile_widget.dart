@@ -1,3 +1,5 @@
+import 'package:achievers_app/repositories/auth_repository.dart';
+import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -110,7 +112,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ])),
                 // SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AuthRepository().signOut().then((value) =>
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignInScreen())));
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 120),
