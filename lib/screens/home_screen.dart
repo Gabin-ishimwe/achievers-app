@@ -1,8 +1,10 @@
 import 'package:achievers_app/repositories/auth_repository.dart';
+import 'package:achievers_app/screens/timer.dart';
 import 'package:achievers_app/widgets/create_task_widget.dart';
 import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:achievers_app/widgets/statistic_widget.dart';
+import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,9 +17,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List homeWidgets = [
     HomeScreenWidget(),
-    Center(
-      child: Text("All task page (To be implemented)"),
-    ),
+    // Center(
+    //   child: Text("All task page (To be implemented)"),
+    // ),
+    TodayTasksScreen(),
     CreateTaskWidget(),
     StatisticsWidget(),
     ProfileWidget(),

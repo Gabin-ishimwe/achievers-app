@@ -23,7 +23,7 @@ class WidgetTree extends StatelessWidget {
             );
           } else {
             print("user not registered--------------");
-            return const SplashScreen();
+            return const OnboardingScreen();
           }
         },
         stream: FirebaseAuth.instance.authStateChanges(),

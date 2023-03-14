@@ -1,3 +1,4 @@
+import 'package:achievers_app/screens/timer.dart';
 import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -158,81 +159,91 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                         return Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            Color(0xFF04060F).withOpacity(0.05),
-                                        spreadRadius: 3,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Card(
-                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                      elevation: 0,
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: ListTile(
-                                          autofocus: false,
-                                          leading: Container(
-                                            height: 45,
-                                            width: 45,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Color(todos[index].color),
-                                            ),
-                                            child: Center(
-                                              child: Icon(
-                                                todos[index].icon,
-                                                color: Colors.white,
-                                                size: 25,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => TimerScreen()));
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color(0xFF04060F)
+                                              .withOpacity(0.05),
+                                          spreadRadius: 3,
+                                          blurRadius: 10,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Card(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                        elevation: 0,
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: ListTile(
+                                            autofocus: false,
+                                            leading: Container(
+                                              height: 45,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color:
+                                                    Color(todos[index].color),
                                               ),
-                                            ),
-                                          ),
-                                          title: Text(
-                                            todos[index].title,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          ),
-                                          subtitle: Text(
-                                            todos[index].time,
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Color(0xFF7C7575)),
-                                          ),
-                                          trailing: Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Color(0xFF39E180),
-                                                  Color(0xFF1AB65C),
-                                                ],
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                              ),
-                                              // color:Color(0xFF1AB65C),
-                                            ),
-                                            child: Center(
+                                              child: Center(
                                                 child: Icon(
-                                              Icons.play_arrow,
-                                              color: Colors.white,
-                                            )),
-                                          )
-                                          // ),
-                                          )))
+                                                  todos[index].icon,
+                                                  color: Colors.white,
+                                                  size: 25,
+                                                ),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              todos[index].title,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 16,
+                                                  color: Colors.black),
+                                            ),
+                                            subtitle: Text(
+                                              todos[index].time,
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Color(0xFF7C7575)),
+                                            ),
+                                            trailing: Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF39E180),
+                                                    Color(0xFF1AB65C),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
+                                                // color:Color(0xFF1AB65C),
+                                              ),
+                                              child: Center(
+                                                  child: Icon(
+                                                Icons.play_arrow,
+                                                color: Colors.white,
+                                              )),
+                                            )
+                                            // ),
+                                            ))),
+                              )
                             ]);
                       })),
             ],
