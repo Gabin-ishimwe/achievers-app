@@ -5,6 +5,7 @@ import 'package:achievers_app/screens/sign_up_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -22,10 +23,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> signInWithEmailAndPassword() async {
     try {
-      await AuthRepository().createrWithEmailAndPassword(
+      await AuthRepository().signInWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       print(e);
+      throw (e);
+    } catch (e) {
+      print(e);
+      throw e;
     }
   }
 
@@ -150,7 +155,41 @@ class _SignInScreenState extends State<SignInScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (formState.currentState!.validate()) {
-                        signInWithEmailAndPassword();
+                        setState(() {
+                          isLoading = true;
+                        });
+                        signInWithEmailAndPassword().then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }).catchError((e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Color.fromARGB(255, 235, 53, 34),
+                              behavior: SnackBarBehavior.floating,
+                              content: Row(children: [
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "Invalid Credentials, Try again !!!",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ])));
+                        });
                       }
                       // Navigator.push(
                       //     context,
@@ -161,16 +200,19 @@ class _SignInScreenState extends State<SignInScreen> {
                         ? SizedBox(
                             height: 24,
                             width: 24,
-                            child: CircularProgressIndicator())
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ))
                         : Text(
                             "Sign In",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                     style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50))),
+                      elevation: 0,
+                      padding: const EdgeInsets.all(15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
                   ),
                   SizedBox(
                     height: 40,
