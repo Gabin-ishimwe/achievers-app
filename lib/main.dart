@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: TimerScreen(),
+      home: HomeScreen(),
     );
   }
 }

@@ -15,27 +15,29 @@ class _HoverCardState extends State<HoverCard> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
+    return 
+        // width: isHovering ? 300.0 : 200.0,
+        // decoration: BoxDecoration(
+        //   color: Colors.white,
+        //   borderRadius: BorderRadius.circular(10.0),
+        //   boxShadow: [
+        //     BoxShadow(
+        //       color: Colors.grey.withOpacity(0.5),
+        //       spreadRadius: 5,
+        //       blurRadius: 7,
+        //       offset: Offset(0, 3),
+        //     ),
+        //   ],
+        // ),
+        
+        Center(
+            child: MouseRegion(
       onEnter: (_) => setState(() => isHovering = true),
       onExit: (_) => setState(() => isHovering = false),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        height: isHovering ? 300.0 : 200.0,
-        width: isHovering ? 300.0 : 200.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Center(
+        height: isHovering ? 100.0 : 80.0,
             child: Container(
                 decoration: BoxDecoration(
                   boxShadow: [
@@ -54,7 +56,8 @@ class _HoverCardState extends State<HoverCard> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: ListTile(
+                    child: 
+                    Center(child: ListTile(
                         autofocus: false,
                         leading: Container(
                           height: 45,
@@ -105,7 +108,7 @@ class _HoverCardState extends State<HoverCard> {
                           )),
                         )
                         // ),
-                        )))),
+                        ))))),
       ),
     );
   }
