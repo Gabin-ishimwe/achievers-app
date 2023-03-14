@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "28440167623",
-    "project_id": "taskachievers-1ebdf",
-    "storage_bucket": "taskachievers-1ebdf.appspot.com"
+    "project_number": "494873553334",
+    "project_id": "achievers-app-147e9",
+    "storage_bucket": "achievers-app-147e9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:28440167623:android:94b845e6b00000f0412ae2",
+        "mobilesdk_app_id": "1:494873553334:android:eb8ddf5578c7051c567917",
         "android_client_info": {
           "package_name": "com.example.achievers_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "28440167623-2a8t6b3e3jg09sov683lhtaap84k34bv.apps.googleusercontent.com",
+          "client_id": "494873553334-uposqiq41pe6v09hls0uk6u9k6ihoqkk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAUAqB6F1pVesQNDDxW03bmIQSw19PEZ0E"
+          "current_key": "AIzaSyB1EEUNF0cZjg34TXxCn1yudSpDGsKFOfQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "28440167623-2a8t6b3e3jg09sov683lhtaap84k34bv.apps.googleusercontent.com",
+              "client_id": "494873553334-uposqiq41pe6v09hls0uk6u9k6ihoqkk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

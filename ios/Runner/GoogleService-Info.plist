@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>28440167623-nnl3g317grv91lr14o09g6tjpenfe5f2.apps.googleusercontent.com</string>
+	<string>494873553334-okhkm6fkerporkvi34o2orphi5t1n24i.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.28440167623-nnl3g317grv91lr14o09g6tjpenfe5f2</string>
+	<string>com.googleusercontent.apps.494873553334-okhkm6fkerporkvi34o2orphi5t1n24i</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBuqin7tIAAZgLCnurTzVrRKfKJweoOdv8</string>
+	<string>AIzaSyBXPm6Tmyu4czGeMnryAl8p0mnvv6qeXRU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>28440167623</string>
+	<string>494873553334</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.achieversApp</string>
 	<key>PROJECT_ID</key>
-	<string>taskachievers-1ebdf</string>
+	<string>achievers-app-147e9</string>
 	<key>STORAGE_BUCKET</key>
-	<string>taskachievers-1ebdf.appspot.com</string>
+	<string>achievers-app-147e9.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:28440167623:ios:31b98d0b68e9f160412ae2</string>
+	<string>1:494873553334:ios:e089a5675f8ba451567917</string>
 </dict>
 </plist>

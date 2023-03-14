@@ -44,39 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCNn-V05gzXRdprTwqInV8R9NXb5iBhTfI',
-    appId: '1:28440167623:web:f48511d596e0f67d412ae2',
-    messagingSenderId: '28440167623',
-    projectId: 'taskachievers-1ebdf',
-    authDomain: 'taskachievers-1ebdf.firebaseapp.com',
-    storageBucket: 'taskachievers-1ebdf.appspot.com',
+    apiKey: 'AIzaSyAB4NVEahCK1BxidlQedCY7IEGj6A0BayE',
+    appId: '1:494873553334:web:753cd71420476676567917',
+    messagingSenderId: '494873553334',
+    projectId: 'achievers-app-147e9',
+    authDomain: 'achievers-app-147e9.firebaseapp.com',
+    storageBucket: 'achievers-app-147e9.appspot.com',
+    measurementId: 'G-VJTGHG7KE9',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAUAqB6F1pVesQNDDxW03bmIQSw19PEZ0E',
-    appId: '1:28440167623:android:94b845e6b00000f0412ae2',
-    messagingSenderId: '28440167623',
-    projectId: 'taskachievers-1ebdf',
-    storageBucket: 'taskachievers-1ebdf.appspot.com',
+    apiKey: 'AIzaSyB1EEUNF0cZjg34TXxCn1yudSpDGsKFOfQ',
+    appId: '1:494873553334:android:eb8ddf5578c7051c567917',
+    messagingSenderId: '494873553334',
+    projectId: 'achievers-app-147e9',
+    storageBucket: 'achievers-app-147e9.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBuqin7tIAAZgLCnurTzVrRKfKJweoOdv8',
-    appId: '1:28440167623:ios:31b98d0b68e9f160412ae2',
-    messagingSenderId: '28440167623',
-    projectId: 'taskachievers-1ebdf',
-    storageBucket: 'taskachievers-1ebdf.appspot.com',
-    iosClientId: '28440167623-nnl3g317grv91lr14o09g6tjpenfe5f2.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBXPm6Tmyu4czGeMnryAl8p0mnvv6qeXRU',
+    appId: '1:494873553334:ios:e089a5675f8ba451567917',
+    messagingSenderId: '494873553334',
+    projectId: 'achievers-app-147e9',
+    storageBucket: 'achievers-app-147e9.appspot.com',
+    iosClientId: '494873553334-okhkm6fkerporkvi34o2orphi5t1n24i.apps.googleusercontent.com',
     iosBundleId: 'com.example.achieversApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBuqin7tIAAZgLCnurTzVrRKfKJweoOdv8',
-    appId: '1:28440167623:ios:31b98d0b68e9f160412ae2',
-    messagingSenderId: '28440167623',
-    projectId: 'taskachievers-1ebdf',
-    storageBucket: 'taskachievers-1ebdf.appspot.com',
-    iosClientId: '28440167623-nnl3g317grv91lr14o09g6tjpenfe5f2.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBXPm6Tmyu4czGeMnryAl8p0mnvv6qeXRU',
+    appId: '1:494873553334:ios:e089a5675f8ba451567917',
+    messagingSenderId: '494873553334',
+    projectId: 'achievers-app-147e9',
+    storageBucket: 'achievers-app-147e9.appspot.com',
+    iosClientId: '494873553334-okhkm6fkerporkvi34o2orphi5t1n24i.apps.googleusercontent.com',
     iosBundleId: 'com.example.achieversApp',
   );
 }

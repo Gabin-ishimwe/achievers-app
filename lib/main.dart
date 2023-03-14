@@ -1,5 +1,6 @@
 import 'package:achievers_app/firebase_options.dart';
-import 'package:achievers_app/screens/home.dart';
+import 'package:achievers_app/screens/home_screen.dart';
+import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/screens/onboarding_screen.dart';
 import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:achievers_app/screens/sign_up_screen.dart';
@@ -11,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:achievers_app/screens/session_timer.dart';
 import 'package:achievers_app/screens/short_break_timer.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
+import 'package:achievers_app/screens/timer.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: LongBreakTimerScreen(),
+      home: TimerScreen(),
     );
   }
 }

@@ -8,11 +8,11 @@ class OnboardingModel {
 List<OnboardingModel> onboardContents = [
   OnboardingModel(
       description: "Manage your daily tasks with Achievers",
-      image: "onboarding_screen/onboarding_1.png"),
+      image: "assets/onboarding_screen/onboarding_1.png"),
   OnboardingModel(
       description: "Easily track your productivity with Achievers",
-      image: "onboarding_screen/onboarding_2.png"),
+      image: "assets/onboarding_screen/onboarding_2.png"),
   OnboardingModel(
       description: "Boost your productivity with Achievers",
-      image: "onboarding_screen/onboarding_3.png")
+      image: "assets/onboarding_screen/onboarding_3.png")
 ];
