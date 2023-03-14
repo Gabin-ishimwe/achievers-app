@@ -18,3 +18,14 @@
   <img src="./assets/readme/edit_profile.png" width="100" />
 
 </p>
+
+## Resources used
+1. Setting up Firebase in our project: https://www.youtube.com/watch?v=fxDusoMcWj8&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=4
+
+2. Firebase authentication: 
+
+- https://www.youtube.com/watch?v=Dyu-tcX0H7M&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=3
+
+- https://www.youtube.com/watch?v=4vKiJZNPhss&t=290s
+
+3. Animation: https://www.youtube.com/watch?v=uWiQoQSa8qA&t=11s
