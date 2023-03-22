@@ -1,5 +1,7 @@
+import 'package:achievers_app/repositories/auth_repository.dart';
 import 'package:achievers_app/screens/complete_daily_task.dart';
 import 'package:achievers_app/screens/completion_screen.dart';
+import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/onboarding_screen.dart';
 import 'package:achievers_app/widgets/edit_profile_widget.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +20,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        // return OnboardingScreen();
-        return EditProfileWidget();
+        return OnboardingScreen();
+        // return CompletionScreen();
       }));
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

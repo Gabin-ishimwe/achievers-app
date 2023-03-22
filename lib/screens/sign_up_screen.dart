@@ -1,6 +1,10 @@
+import 'package:achievers_app/repositories/auth_repository.dart';
 import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/sign_in_screen.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +19,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var passwordController = TextEditingController();
   var name = TextEditingController();
   bool isChecked = false;
+  bool isLoading = false;
+
+  Future<void> signUpWithEmailAndPassword() async {
+    try {
+      await AuthRepository().createrWithEmailAndPassword(
+          emailController.text.trim(), passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      throw e;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,6 +75,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     controller: name,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Name is required";
+                      }
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.person),
                         prefixIconColor: Color(0xFFC1C1C1),
@@ -77,6 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     controller: emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (!EmailValidator.validate(
+                          emailController.text.trim())) {
+                        return "Invalid Email";
+                      } else if (value!.isEmpty) {
+                        return "Email required";
+                      }
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.email),
                         prefixIconColor: Color(0xFFC1C1C1),
@@ -96,6 +128,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     controller: passwordController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required";
+                      } else if (value.length < 6) {
+                        return "Password must be greater than 6 characters";
+                      }
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.lock),
                         prefixIconColor: Color(0xFFC1C1C1),
@@ -137,15 +177,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()));
+                      if (formState.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        signUpWithEmailAndPassword().then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }).catchError((e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Color.fromARGB(255, 235, 53, 34),
+                              behavior: SnackBarBehavior.floating,
+                              content: Row(children: [
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  "Error occurred, Try again !!!",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ])));
+                          // throw e;
+                        });
+                      }
                     },
-                    child: Text(
-                      "Sign up",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child: isLoading
+                        ? SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ))
+                        : Text(
+                            "Sign Up",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         padding: const EdgeInsets.all(15),

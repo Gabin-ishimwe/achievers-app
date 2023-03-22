@@ -1,3 +1,4 @@
+import 'package:achievers_app/repositories/auth_repository.dart';
 import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:achievers_app/widgets/edit_profile_widget.dart';
 import 'package:flutter/material.dart';
@@ -141,6 +142,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ElevatedButton(
                   onPressed: () {
                     showModalBottomSheet(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
                         context: context,
                         builder: (context) {
                           return Container(
@@ -214,11 +216,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                         width: 150,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SignInScreen()));
+                                            AuthRepository().signOut().then(
+                                                (value) =>
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SignInScreen())));
                                           },
                                           child: Text(
                                             "Logout",
