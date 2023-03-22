@@ -1,3 +1,5 @@
+import "package:achievers_app/models/task_model.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:select_form_field/select_form_field.dart";
 
@@ -14,19 +16,36 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   var short_break = 0.0;
   var long_break = 0.0;
 
+  final title_controller = TextEditingController();
+  final date_controller = TextEditingController();
+  final start_time_controller = TextEditingController();
+  final category_controller = TextEditingController();
+  final working_sessions_controller = TextEditingController();
+  final short_break_controller = TextEditingController();
+  final long_break_controller = TextEditingController();
+
   final List<Map<String, dynamic>> _items = [
     {
-      'value': 'school',
-      'label': 'School',
+      'value': 'code',
+      'label': 'Code'
     },
     {
       'value': 'health',
-      'label': 'Health',
+      'label': 'Health'
     },
     {
       'value': 'leisure',
-      'label': 'Leisure',
+      'label': 'Leisure'
     },
+    {
+      'value': 'school',
+      'label': 'School'
+    },
+    {
+      'value': 'entertainment',
+      'label': 'Entertainment'
+    },
+
   ];
   @override
   Widget build(BuildContext context) {
@@ -78,6 +97,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   ),
                   Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   TextFormField(
+                    controller: title_controller,
                     decoration: InputDecoration(
                       // labelText: 'Name',
                       hintText: 'Task title',
@@ -117,6 +137,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
+                  controller: date_controller,
                   decoration: InputDecoration(
                       suffixIcon: Icon(Icons.calendar_month),
                       suffixIconColor: Color(0xFFC1C1C1),
@@ -146,6 +167,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
+                  controller: start_time_controller,
                   decoration: InputDecoration(
                       suffixIcon: Icon(Icons.access_time),
                       suffixIconColor: Color(0xFFC1C1C1),
@@ -177,6 +199,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   type: SelectFormFieldType.dropdown,
                   items: _items,
                   enableSearch: true,
+                  controller: category_controller,
                   onChanged: (val) => print(val),
                   onSaved: (val) => print(val),
                   decoration: InputDecoration(
@@ -237,6 +260,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       onChanged: ((value) {
                         setState(() {
                           sessions = value;
+                          working_sessions_controller.text = value.toString();
                         });
                       }),
                       min: 0,
@@ -281,6 +305,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       onChanged: ((value) {
                         setState(() {
                           short_break = value;
+                          short_break_controller.text = value.toString();
                         });
                       }),
                       min: 0,
@@ -325,6 +350,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       onChanged: ((value) {
                         setState(() {
                           long_break = value;
+                          long_break_controller.text = value.toString();
                         });
                       }),
                       min: 0,
@@ -339,7 +365,19 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               Padding(padding: EdgeInsets.symmetric(vertical: 15)),
               // a button that is elevated i.e. has a shadow
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  var new_task = Task(
+                      title: title_controller.text,
+                      date: date_controller.text,
+                      start_time: start_time_controller.text,
+                      category: category_controller.text,
+                      working_sessions:
+                          int.parse(working_sessions_controller.text),
+                      short_break: int.parse(short_break_controller.text),
+                      long_break: int.parse(long_break_controller.text));
+
+                  createTask(new_task);
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(15),
                   backgroundColor: Colors.deepPurple,
@@ -355,5 +393,13 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
             ],
           )),
     );
+  }
+
+  Future createTask(task) async {
+    final docTask = await FirebaseFirestore.instance
+        .collection("tasks")
+        .add(task.toJson())
+        .whenComplete(() => print("task created"))
+        .catchError((err) => {print(err)});
   }
 }

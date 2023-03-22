@@ -1,4 +1,6 @@
+import 'package:achievers_app/models/task_model.dart';
 import 'package:achievers_app/screens/timer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Todo {
@@ -15,6 +17,42 @@ class TodayTasksScreen extends StatefulWidget {
 }
 
 class _TodayTasksScreen extends State<TodayTasksScreen> {
+  var all_tasks;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    allTasks().then((value) {
+      all_tasks = value;
+      getTasks(all_tasks);
+    }).catchError((err) => print(err));
+
+    super.initState();
+  }
+
+  var categories = {
+    "code": {
+      'color': 0xFF00A9F1,
+      'icon': Icons.code,
+    },
+    "health": {'color': 0xFFF54336, 'icon': Icons.fitness_center},
+    "leisure": {
+      'color': 0xFF8BC255,
+      'icon': Icons.self_improvement,
+    },
+    "school": {'color': 0xFF607D8A, 'icon': Icons.assignment},
+    "entertainment": {'color': 0xFFFFC02D, 'icon': Icons.headset},
+  };
+
+  getTasks(the_tasks) {
+    var new_asks_array = the_tasks.map((task) {
+      task["color"] = categories[task.category]!["color"];
+      task["icon"] = categories[task.category]!["icon"];
+      return task;
+    });
+    print(new_asks_array[0].color);
+  }
+
   List<Todo> todos = [
     Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
     Todo('Working out', 0xFFF54336, Icons.fitness_center, '45 minutes'),
@@ -22,7 +60,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
     Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
     Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
     Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-    Todo('Working out', 0xFFF54336, Icons.fitness_center, '45 minutes'),
+    Todo('Working out', 0xFFF54336, Icons.health_and_safety, '45 minutes'),
     Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
     Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
     Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
@@ -162,5 +200,13 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                         ]);
                   }))),
     );
+  }
+
+  final _db = FirebaseFirestore.instance;
+  Future<List<Task>> allTasks() async {
+    final snapshot = await _db.collection("tasks").get();
+    final taskData =
+        snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
+    return taskData;
   }
 }
