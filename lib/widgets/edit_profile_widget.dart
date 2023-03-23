@@ -1,21 +1,39 @@
+import 'package:achievers_app/models/user_model.dart';
+import 'package:achievers_app/repositories/user_repository.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileWidget extends StatefulWidget {
-  const EditProfileWidget({super.key});
+  String fullName;
+  String email;
+  String id;
+  EditProfileWidget(
+      {super.key,
+      required this.fullName,
+      required this.email,
+      required this.id});
 
   @override
   State<EditProfileWidget> createState() => _EditProfileWidgetState();
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   var formState = GlobalKey<FormState>();
-  var emailController = TextEditingController(text: "g.ishimwe@alustudent.com");
-  var fullNameController = TextEditingController(text: "Gabin ISHIMWE"); 
-  var preferredNameController = TextEditingController(text: "Gabin");  
+  var emailController = TextEditingController();
+  var fullNameController = TextEditingController();
+  var preferredNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    emailController.text = widget.email;
+    fullNameController.text = widget.fullName;
+    preferredNameController.text = widget.fullName;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -218,7 +236,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 SizedBox(
                                   width: 150,
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      UserModel userModel = UserModel(
+                                          id: widget.id,
+                                          fullName: fullNameController.text,
+                                          email: emailController.text);
+                                      await UserRepository()
+                                          .updateUser(userModel);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
