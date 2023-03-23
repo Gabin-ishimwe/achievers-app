@@ -1,4 +1,5 @@
 import 'package:achievers_app/firebase_options.dart';
+import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:achievers_app/widgetTree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: TodayTasksScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -269,7 +269,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 60),
+                                      SizedBox(height: 80),
                                     ],
                                   ));
                             });
