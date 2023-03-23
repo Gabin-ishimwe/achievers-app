@@ -18,7 +18,14 @@ class TodayTasksScreen extends StatefulWidget {
 }
 
 class _TodayTasksScreen extends State<TodayTasksScreen> {
-  late Future<List<Task>> all_tasks;
+  var all_tasks;
+  var length;
+
+  static Future<int> _getTasksLength() async {
+    return await Db.allTasks().then((value) {
+      return value.length;
+    });
+  }
 
   @override
   void initState() {
@@ -27,6 +34,11 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
     //   all_tasks = Db.allTasks();
     // }).catchError((err) => print(err));
     all_tasks = Db.allTasks();
+    _getTasksLength().then((value) {
+      setState(() {
+        length = value;
+      });
+    });
 
     super.initState();
   }
@@ -47,6 +59,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
   @override
   Widget build(BuildContext context) {
     // print(getTasks(all_tasks));
+    Future<List<Task>> _myData = Db.allTasks();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -72,7 +85,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
               ),
               // child: Icon(Icons.arrow_back, color: Colors.black,),
               Text(
-                'All tasks (10)',
+                'All tasks (${length})',
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -84,7 +97,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
       ),
       body: SingleChildScrollView(
           child: FutureBuilder(
-              future: all_tasks,
+              future: _myData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var todos = snapshot.data;
@@ -112,8 +125,21 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                           motion: DrawerMotion(),
                                           children: [
                                             CustomSlidableAction(
-                                              onPressed: ((context) {
-                                                
+                                              onPressed: ((context) async {
+                                                final docUser =
+                                                    FirebaseFirestore.instance
+                                                        .collection('tasks')
+                                                        .doc(todos![index].id);
+                                                await docUser.delete();
+                                                setState(() {
+                                                  _myData = Db.allTasks();
+                                                  _getTasksLength()
+                                                      .then((value) {
+                                                    setState(() {
+                                                      length = value;
+                                                    });
+                                                  });
+                                                });
                                               }),
                                               // margin: EdgeInsets.fromLTRB(
                                               //     0, 0, 0, 10),
@@ -201,7 +227,8 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                     todos![index].category,
                                                     style: TextStyle(
                                                         fontSize: 11,
-                                                        color: Color(0xFF7C7575)),
+                                                        color:
+                                                            Color(0xFF7C7575)),
                                                   ),
                                                   trailing: Container(
                                                     width: 40,
