@@ -1,4 +1,6 @@
+import 'package:achievers_app/models/user_model.dart';
 import 'package:achievers_app/repositories/auth_repository.dart';
+import 'package:achievers_app/repositories/user_repository.dart';
 import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:email_validator/email_validator.dart';
@@ -23,6 +25,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> signUpWithEmailAndPassword() async {
     try {
+      UserModel user = UserModel(
+          fullName: name.text,
+          email: emailController.text,
+          password: passwordController.text);
+      await UserRepository().createUser(user);
       await AuthRepository().createrWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
