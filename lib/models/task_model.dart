@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Task {
   final String? id;
   final String title;
+  final String description;
   final date;
   final start_time;
   final String category;
@@ -15,6 +16,7 @@ class Task {
   Task(
       {this.id,
       required this.title,
+      required this.description,
       required this.date,
       required this.start_time,
       required this.category,
@@ -27,6 +29,7 @@ class Task {
   toJson() {
     return {
       "title": title,
+      "description": description,
       "date": date,
       "start_time": start_time,
       "category": category,
@@ -41,6 +44,7 @@ class Task {
     return Task(
         id: document.id,
         title: data["title"],
+        description: data["description"],
         date: data["date"],
         start_time: data["start_time"],
         category: data["category"],

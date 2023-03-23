@@ -17,6 +17,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   var long_break = 0.0;
 
   final title_controller = TextEditingController();
+  final description_controller = TextEditingController();
   final date_controller = TextEditingController();
   final start_time_controller = TextEditingController();
   final category_controller = TextEditingController();
@@ -85,6 +86,48 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                     decoration: InputDecoration(
                       // labelText: 'Name',
                       hintText: 'Task title',
+                      hintStyle: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey[600],
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0x4C05BE).withOpacity(1)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(0.1),
+                      hoverColor: Colors.grey.withOpacity(0),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Description",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  TextFormField(
+                    controller: description_controller,
+                    decoration: InputDecoration(
+                      // labelText: 'Name',
+                      hintText: 'Short description',
                       hintStyle: TextStyle(
                         fontSize: 14.0,
                         color: Colors.grey[600],
@@ -352,6 +395,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 onPressed: () {
                   var new_task = Task(
                       title: title_controller.text,
+                      description: description_controller.text,
                       date: date_controller.text,
                       start_time: start_time_controller.text,
                       category: category_controller.text,

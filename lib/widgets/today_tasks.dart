@@ -155,12 +155,12 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                       fontSize: 16,
                                                       color: Colors.black),
                                                 ),
-                                                // subtitle: Text(
-                                                //   all_tasks[index].time,
-                                                //   style: TextStyle(
-                                                //       fontSize: 11,
-                                                //       color: Color(0xFF7C7575)),
-                                                // ),
+                                                subtitle: Text(
+                                                  todos[index].description,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Color(0xFF7C7575)),
+                                                ),
                                                 trailing: Container(
                                                   width: 40,
                                                   height: 40,
