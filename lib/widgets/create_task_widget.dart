@@ -25,27 +25,11 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   final long_break_controller = TextEditingController();
 
   final List<Map<String, dynamic>> _items = [
-    {
-      'value': 'code',
-      'label': 'Code'
-    },
-    {
-      'value': 'health',
-      'label': 'Health'
-    },
-    {
-      'value': 'leisure',
-      'label': 'Leisure'
-    },
-    {
-      'value': 'school',
-      'label': 'School'
-    },
-    {
-      'value': 'entertainment',
-      'label': 'Entertainment'
-    },
-
+    {'value': 'code', 'label': 'Code'},
+    {'value': 'health', 'label': 'Health'},
+    {'value': 'leisure', 'label': 'Leisure'},
+    {'value': 'school', 'label': 'School'},
+    {'value': 'entertainment', 'label': 'Entertainment'},
   ];
   @override
   Widget build(BuildContext context) {
