@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
+import 'package:achievers_app/widgets/today_tasks.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: WidgetTree(),
+      home: TodayTasksScreen(),
     );
   }
 }
