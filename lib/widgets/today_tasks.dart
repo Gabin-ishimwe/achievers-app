@@ -224,7 +224,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                         color: Colors.black),
                                                   ),
                                                   subtitle: Text(
-                                                    todos![index].category,
+                                                    todos![index].description,
                                                     style: TextStyle(
                                                         fontSize: 11,
                                                         color:
