@@ -19,6 +19,10 @@
 
 </p>
 
+## Important files
+1. Figma link: https://www.figma.com/file/UQl8G6hyN4KVRGxyGkFBED/MDV_mini-project?t=VsuDxdWgrA2uOpoV-0
+2. Project proposal: https://docs.google.com/document/d/1nksDKw0bZ9pXJs-bkGg7JWUIyg8igsvuwcM5_gl5LlQ/edit
+
 ## Resources used
 1. Setting up Firebase in our project: https://www.youtube.com/watch?v=fxDusoMcWj8&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=4
 
