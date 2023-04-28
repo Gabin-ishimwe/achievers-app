@@ -162,6 +162,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var todos = snapshot.data;
+                    print(todos);
                     return Container(
                         width: MediaQuery.of(context).size.width,
                         // margin: EdgeInsets.fromLTRB(18, 18, 15, 0),

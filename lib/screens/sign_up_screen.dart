@@ -205,6 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               MaterialPageRoute(
                                   builder: (context) => const HomeScreen()));
                         }).catchError((e) {
+                          print(e);
                           setState(() {
                             isLoading = false;
                           });
