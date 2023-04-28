@@ -101,6 +101,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var todos = snapshot.data;
+                  
                   return Container(
                       margin: EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,

@@ -33,9 +33,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       await AuthRepository().createrWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      throw e;
+      return Future.value(); 
     } catch (e) {
-      throw e;
+      return Future.value(); 
     }
   }
 
@@ -198,6 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()));
                         }).catchError((e) {
+                          print(e);
                           setState(() {
                             isLoading = false;
                           });
