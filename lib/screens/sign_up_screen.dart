@@ -29,13 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           fullName: name.text,
           email: emailController.text,
           password: passwordController.text);
-      await UserRepository().createUser(user);
       await AuthRepository().createrWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
+      await UserRepository().createUser(user);
     } on FirebaseAuthException catch (e) {
-      throw e;
+      rethrow;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Form(
@@ -56,20 +56,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: InkWell(
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
                       onTap: () {
                         Navigator.pop(context);
                       },
                       splashColor: Colors.transparent,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Create account",
@@ -77,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   TextFormField(
@@ -87,22 +87,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value!.isEmpty) {
                         return "Name is required";
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        prefixIconColor: Color(0xFFC1C1C1),
-                        fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
+                        prefixIcon: const Icon(Icons.person),
+                        prefixIconColor: const Color(0xFFC1C1C1),
+                        fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 15),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
                         hintText: "Name",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           color: Color(0xFFC1C1C1),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -115,22 +117,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       } else if (value!.isEmpty) {
                         return "Email required";
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
-                        prefixIconColor: Color(0xFFC1C1C1),
-                        fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
+                        prefixIcon: const Icon(Icons.email),
+                        prefixIconColor: const Color(0xFFC1C1C1),
+                        fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 15),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
                         hintText: "Email",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           color: Color(0xFFC1C1C1),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -143,29 +147,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       } else if (value.length < 6) {
                         return "Password must be greater than 6 characters";
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        prefixIconColor: Color(0xFFC1C1C1),
-                        fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
+                        prefixIcon: const Icon(Icons.lock),
+                        prefixIconColor: const Color(0xFFC1C1C1),
+                        fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
                         filled: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 15),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
                         hintText: "Password",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           color: Color(0xFFC1C1C1),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Checkbox(
-                          side: BorderSide(color: Colors.deepPurple, width: 2),
+                          side: const BorderSide(
+                              color: Colors.deepPurple, width: 2),
                           value: isChecked,
                           onChanged: (newBool) {
                             setState(() {
@@ -173,14 +180,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           }),
                       // Padding(padding: EdgeInsets.only(right: 5)),
-                      Text(
+                      const Text(
                         "Remember me",
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   ElevatedButton(
@@ -196,20 +203,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
+                                  builder: (context) => const HomeScreen()));
                         }).catchError((e) {
                           setState(() {
                             isLoading = false;
                           });
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Color.fromARGB(255, 235, 53, 34),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 235, 53, 34),
                               behavior: SnackBarBehavior.floating,
                               content: Row(children: [
-                                Icon(
+                                const Icon(
                                   Icons.error,
                                   color: Colors.white,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Text(
@@ -224,6 +232,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        padding: const EdgeInsets.all(15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
                     child: isLoading
                         ? SizedBox(
                             height: 24,
@@ -235,29 +248,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             "Sign Up",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have an account?"),
-                      Padding(padding: EdgeInsets.only(right: 5)),
+                      const Text("Already have an account?"),
+                      const Padding(padding: EdgeInsets.only(right: 5)),
                       InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignInScreen()));
+                                  builder: (context) => const SignInScreen()));
                         },
                         splashColor: Colors.transparent,
-                        child: Text(
+                        child: const Text(
                           "Login",
                           style: TextStyle(
                               color: Colors.deepPurple,
