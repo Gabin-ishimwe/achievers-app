@@ -127,24 +127,17 @@ class _CalendarPageState extends State<CalendarPage> {
                         if (snapshot.hasData) {
                           var todos = snapshot.data;
                           print(todos);
-                          // Map<int, List<Task>> tasksByHour = {};
-                          // //group the tasks by hour
-                          // for (int i = 0; i < todos!.length; i++) {
-                          //   int hour =
-                          //       int.parse(todos[i].start_time.split(":")[0]);
-                          //   if (!tasksByHour.containsKey(hour)) {
-                          //     tasksByHour[hour] = [];
-                          //   }
-                          //   tasksByHour[hour]!.add(todos[i]);
-                          // }
 
                           Map<String, List<Task>> tasksByHour = {};
                           // group the tasks by hour
                           for (int i = 0; i < todos!.length; i++) {
+                            DateTime taskDate =
+                                DateFormat("MM/dd/yyyy").parse(todos[i].date);
+                            if (DateFormat('MM/dd/yyyy').format(taskDate) !=  DateFormat('MM/dd/yyyy').format(_selectedDate)) continue;
                             String hour = DateFormat('hh a').format(
                                 DateFormat("hh:mm a")
                                     .parse(todos[i].start_time));
-                            print(hour);
+
                             if (!tasksByHour.containsKey(hour)) {
                               tasksByHour[hour] = [];
                             }
@@ -168,89 +161,98 @@ class _CalendarPageState extends State<CalendarPage> {
                                   String currentHour = DateFormat('hh:00 a')
                                       .format(DateFormat("hh a")
                                           .parse(formattedHour));
-                                  return tasks.isNotEmpty
-                                      ? Column(children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(0xFF04060F)
-                                                .withOpacity(0.05),
-                                            spreadRadius: 3,
-                                            blurRadius: 10,
-                                            offset: Offset(0, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: <Widget>[
-                                          // add a header for each hour
+                                  // return tasks.isNotEmpty ? 
+                                  return Column(children: [
                                           Container(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(currentHour,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold)),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color(0xFF04060F)
+                                                      .withOpacity(0.05),
+                                                  spreadRadius: 3,
+                                                  blurRadius: 10,
+                                                  offset: Offset(0, 3),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          // add tasks for this hour
-                                          ...tasks.map((task) => InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            TimerScreen()),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 0, 10, 5),
-                                                  child: Card(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 0, 0, 10),
-                                                    elevation: 0,
-                                                    color: Color(task.color),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                    ),
-                                                    child: ListTile(
-                                                      autofocus: false,
-                                                      title: Text(
-                                                        task.title,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: <Widget>[
+                                                // add a header for each hour
+                                                Container(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(currentHour,
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize: 16,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      subtitle: Text(
-                                                        task.start_time,
-                                                        style: TextStyle(
-                                                            fontSize: 11,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
                                                   ),
                                                 ),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10)),
-                                  ]) : SizedBox.shrink();
+                                                // add tasks for this hour
+                                                ...tasks.map((task) => InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  TimerScreen()),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                10, 0, 10, 5),
+                                                        child: Card(
+                                                          margin: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 0, 0, 10),
+                                                          elevation: 0,
+                                                          color:
+                                                              Color(task.color),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
+                                                          ),
+                                                          child: ListTile(
+                                                            autofocus: false,
+                                                            title: Text(
+                                                              task.title,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900,
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            subtitle: Text(
+                                                              task.start_time,
+                                                              style: TextStyle(
+                                                                  fontSize: 11,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 10)),
+                                        ]);
+                                      // : SizedBox.shrink();
                                 },
                               ));
                         } else {
