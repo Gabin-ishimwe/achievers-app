@@ -50,6 +50,7 @@ dependencies:
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
   sticky_headers: "^0.3.0"
+  calendar_flutter: ^1.0.0
 
 dev_dependencies:
   flutter_test:

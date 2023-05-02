@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  auto_size_text:
+    dependency: transitive
+    description:
+      name: auto_size_text
+      sha256: "5d4a6d29727505dfa186b7c05afa19d9ac4166b139985e37b29cb212ec26bcb5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -25,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  calendar_flutter:
+    dependency: "direct main"
+    description:
+      name: calendar_flutter
+      sha256: dd62c5eea8928b296538f59429838d45a4c6b61d8065eccaf3bcecb088d12d40
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.5"
   characters:
     dependency: transitive
     description:

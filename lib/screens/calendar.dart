@@ -25,11 +25,33 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   late Future<List<Task>> all_tasks;
+
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     all_tasks = Db.allTasks() as Future<List<Task>>;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Scroll to today's date after the page has finished building
+      _scrollToToday();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToToday() {
+    final today = DateTime.now();
+    final todayPosition = (today.day - 1) * 60.0;
+    _scrollController.animateTo(
+      todayPosition,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -65,59 +87,142 @@ class _CalendarPageState extends State<CalendarPage> {
           children: [
             StickyHeader(
                 header: Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.arrow_back),
-                            onPressed: () {
-                              setState(() {
-                                _selectedDate = DateTime(
-                                  _selectedDate.year,
-                                  _selectedDate.month - 1,
-                                  1,
-                                );
-                                _onMonthChange(_selectedDate);
-                              });
-                            },
-                          ),
-                          Text(
-                            DateFormat('MMMM yyyy').format(_selectedDate),
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.arrow_forward),
-                            onPressed: () {
-                              setState(() {
-                                _selectedDate = DateTime(
-                                  _selectedDate.year,
-                                  _selectedDate.month + 1,
-                                  1,
-                                );
-                                _onMonthChange(_selectedDate);
-                              });
-                            },
-                          ),
-                        ],
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFF04060F).withOpacity(0.05),
+                        spreadRadius: 3,
+                        blurRadius: 10,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Colors.deepPurple,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_back, color: Colors.white),
+                              onPressed: () {
+                                setState(() {
+                                  _selectedDate = DateTime(
+                                    _selectedDate.year,
+                                    _selectedDate.month - 1,
+                                    1,
+                                  );
+                                  _onMonthChange(_selectedDate);
+                                });
+                              },
+                            ),
+                            Text(
+                              DateFormat('MMMM yyyy').format(_selectedDate),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _selectedDate = DateTime(
+                                    _selectedDate.year,
+                                    _selectedDate.month + 1,
+                                    1,
+                                  );
+                                  _onMonthChange(_selectedDate);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       Container(
                         height: 95,
-                        margin: EdgeInsets.fromLTRB(13, 15, 0, 0),
-                        child: DatePicker(
-                          DateTime.now(),
-                          initialSelectedDate: DateTime.now(),
-                          selectionColor: Colors.deepPurple,
-                          selectedTextColor: Colors.white,
-                          onDateChange: (date) {
-                            _selectDate(date);
+                        margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 31,
+                          itemBuilder: (context, index) {
+                            final date = DateTime(
+                              _selectedDate.year,
+                              _selectedDate.month,
+                              index + 1,
+                            );
+                            final now = DateTime.now();
+                            final isSelected = date == _selectedDate;
+                            final isSelectedToday = isSameDay(date, now);
+
+                            // DateTime seldate = DateTime(date);
+                            final dayName = DateFormat.E().format(date);
+                            return GestureDetector(
+                                onTap: () => _selectDate(date),
+                                child: Container(
+                                  width: 60,
+                                  margin: EdgeInsets.only(right: 5),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.deepPurple,
+                                      width: isSelectedToday ? 2 : 1,
+                                    ),
+                                    color:isSelectedToday
+                                                ? Colors.deepPurple.shade100
+                                                : isSelected
+                                                    ? Colors.deepPurple
+                                                    : null,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '${index + 1}',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w900,
+                                            color: isSelectedToday
+                                                ? Colors.deepPurple
+                                                : isSelected
+                                                    ? Colors.white
+                                                    : null,
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 4)),
+                                        Text(
+                                          dayName.toUpperCase(),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: isSelectedToday
+                                                ? FontWeight.w900
+                                                : FontWeight.normal,
+                                            color: isSelectedToday
+                                                ? Colors.deepPurple
+                                                : isSelected
+                                                    ? Colors.white
+                                                    : null,
+                                          ),
+                                        ),
+                                      ]),
+                                ));
                           },
                         ),
                       ),
-                    ])),
+                    ],
+                  ),
+                ),
                 content: Column(
                   children: [
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
@@ -133,7 +238,9 @@ class _CalendarPageState extends State<CalendarPage> {
                           for (int i = 0; i < todos!.length; i++) {
                             DateTime taskDate =
                                 DateFormat("MM/dd/yyyy").parse(todos[i].date);
-                            if (DateFormat('MM/dd/yyyy').format(taskDate) !=  DateFormat('MM/dd/yyyy').format(_selectedDate)) continue;
+                            if (DateFormat('MM/dd/yyyy').format(taskDate) !=
+                                DateFormat('MM/dd/yyyy').format(_selectedDate))
+                              continue;
                             String hour = DateFormat('hh a').format(
                                 DateFormat("hh:mm a")
                                     .parse(todos[i].start_time));
@@ -161,98 +268,90 @@ class _CalendarPageState extends State<CalendarPage> {
                                   String currentHour = DateFormat('hh:00 a')
                                       .format(DateFormat("hh a")
                                           .parse(formattedHour));
-                                  // return tasks.isNotEmpty ? 
+                                  // return tasks.isNotEmpty ?
                                   return Column(children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Color(0xFF04060F)
+                                                .withOpacity(0.05),
+                                            spreadRadius: 3,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          // add a header for each hour
                                           Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Color(0xFF04060F)
-                                                      .withOpacity(0.05),
-                                                  spreadRadius: 3,
-                                                  blurRadius: 10,
-                                                  offset: Offset(0, 3),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: <Widget>[
-                                                // add a header for each hour
-                                                Container(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(currentHour,
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ),
-                                                ),
-                                                // add tasks for this hour
-                                                ...tasks.map((task) => InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  TimerScreen()),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                10, 0, 10, 5),
-                                                        child: Card(
-                                                          margin: EdgeInsets
-                                                              .fromLTRB(
-                                                                  0, 0, 0, 10),
-                                                          elevation: 0,
-                                                          color:
-                                                              Color(task.color),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0),
-                                                          ),
-                                                          child: ListTile(
-                                                            autofocus: false,
-                                                            title: Text(
-                                                              task.title,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                fontSize: 16,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                            subtitle: Text(
-                                                              task.start_time,
-                                                              style: TextStyle(
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ],
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(currentHour,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                             ),
                                           ),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 10)),
-                                        ]);
-                                      // : SizedBox.shrink();
+                                          // add tasks for this hour
+                                          ...tasks.map((task) => InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            TimerScreen()),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      10, 0, 10, 5),
+                                                  child: Card(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        0, 0, 0, 10),
+                                                    elevation: 0,
+                                                    color: Color(task.color),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                    ),
+                                                    child: ListTile(
+                                                      autofocus: false,
+                                                      title: Text(
+                                                        task.title,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 16,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        task.start_time,
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10)),
+                                  ]);
+                                  // : SizedBox.shrink();
                                 },
                               ));
                         } else {
@@ -266,5 +365,11 @@ class _CalendarPageState extends State<CalendarPage> {
                 ))
           ],
         ))));
+  }
+
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 }
