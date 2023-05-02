@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../repositories/task_repository.dart';
+
 class Todo {
   String title;
   var color;
@@ -13,6 +15,8 @@ class Todo {
 }
 
 class TodayTasksScreen extends StatefulWidget {
+  const TodayTasksScreen({super.key});
+
   @override
   State<TodayTasksScreen> createState() => _TodayTasksScreen();
 }
@@ -59,11 +63,11 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
   @override
   Widget build(BuildContext context) {
     // print(getTasks(all_tasks));
-    Future<List<Task>> _myData = Db.allTasks();
+    Future<List<Task>> myData = Db.allTasks();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(60),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
@@ -75,7 +79,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: Icon(
                     Icons.arrow_back,
@@ -85,8 +89,8 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
               ),
               // child: Icon(Icons.arrow_back, color: Colors.black,),
               Text(
-                'All tasks (${length})',
-                style: TextStyle(
+                'All tasks ($length)',
+                style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
@@ -97,16 +101,16 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
       ),
       body: SingleChildScrollView(
           child: FutureBuilder(
-              future: _myData,
+              future: myData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var todos = snapshot.data;
                   return Container(
-                      margin: EdgeInsets.fromLTRB(18, 10, 15, 0),
+                      margin: const EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: todos?.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Column(
@@ -122,7 +126,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                     },
                                     child: Slidable(
                                       endActionPane: ActionPane(
-                                          motion: DrawerMotion(),
+                                          motion: const DrawerMotion(),
                                           children: [
                                             CustomSlidableAction(
                                               onPressed: ((context) async {
@@ -132,7 +136,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                         .doc(todos![index].id);
                                                 await docUser.delete();
                                                 setState(() {
-                                                  _myData = Db.allTasks();
+                                                  myData = Db.allTasks();
                                                   _getTasksLength()
                                                       .then((value) {
                                                     setState(() {
@@ -144,7 +148,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                               // margin: EdgeInsets.fromLTRB(
                                               //     0, 0, 0, 10),
                                               backgroundColor:
-                                                  Color(0xFFffffff),
+                                                  const Color(0xFFffffff),
                                               // foregroundColor: Colors.white,
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
@@ -153,18 +157,21 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                 decoration: BoxDecoration(
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Color(0xFF04060F)
+                                                      color: const Color(
+                                                              0xFF04060F)
                                                           .withOpacity(0.05),
                                                       spreadRadius: 3,
                                                       blurRadius: 10,
-                                                      offset: Offset(0, 3),
+                                                      offset:
+                                                          const Offset(0, 3),
                                                     ),
                                                   ],
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  color: Color(0xFFfddcdd),
+                                                  color:
+                                                      const Color(0xFFfddcdd),
                                                 ),
-                                                child: Center(
+                                                child: const Center(
                                                   child: Icon(
                                                     Icons.delete_outline,
                                                     color: Colors.white,
@@ -178,16 +185,16 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                           decoration: BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Color(0xFF04060F)
+                                                color: const Color(0xFF04060F)
                                                     .withOpacity(0.05),
                                                 spreadRadius: 3,
                                                 blurRadius: 10,
-                                                offset: Offset(0, 3),
+                                                offset: const Offset(0, 3),
                                               ),
                                             ],
                                           ),
                                           child: Card(
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 0, 10),
                                               elevation: 0,
                                               color: Colors.white,
@@ -217,15 +224,15 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                   ),
                                                   title: Text(
                                                     todos![index].title,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w900,
                                                         fontSize: 16,
                                                         color: Colors.black),
                                                   ),
                                                   subtitle: Text(
-                                                    todos![index].description,
-                                                    style: TextStyle(
+                                                    todos[index].description,
+                                                    style: const TextStyle(
                                                         fontSize: 11,
                                                         color:
                                                             Color(0xFF7C7575)),
@@ -237,7 +244,8 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               100),
-                                                      gradient: LinearGradient(
+                                                      gradient:
+                                                          const LinearGradient(
                                                         colors: [
                                                           Color(0xFF39E180),
                                                           Color(0xFF1AB65C),
@@ -249,7 +257,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                                       ),
                                                       // color:Color(0xFF1AB65C),
                                                     ),
-                                                    child: Center(
+                                                    child: const Center(
                                                         child: Icon(
                                                       Icons.play_arrow,
                                                       color: Colors.white,
@@ -262,7 +270,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                 ]);
                           }));
                 } else {
-                  return Padding(
+                  return const Padding(
                     padding: EdgeInsets.only(top: 50),
                     child: Center(
                       child: CircularProgressIndicator(),
@@ -283,41 +291,4 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
   //   print(taskData);
   //   return taskData;
   // }
-}
-
-class Db {
-  static var categories = {
-    "code": {
-      'color': 0xFF00A9F1,
-      'icon': Icons.code,
-    },
-    "health": {'color': 0xFFF54336, 'icon': Icons.fitness_center},
-    "leisure": {
-      'color': 0xFF8BC255,
-      'icon': Icons.self_improvement,
-    },
-    "school": {'color': 0xFF607D8A, 'icon': Icons.assignment},
-    "entertainment": {'color': 0xFFFFC02D, 'icon': Icons.headset},
-  };
-
-  static final _db = FirebaseFirestore.instance;
-  static Future<List<Task>> allTasks() async {
-    final snapshot = await _db.collection("tasks").get();
-    var taskData =
-        snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
-
-    taskData = getTasks(taskData);
-    print(taskData);
-    return taskData;
-  }
-
-  static List<Task> getTasks(List<Task> the_tasks) {
-    var new_asks_array = the_tasks.map((Task task) {
-      task.color = categories[task.category]!["color"];
-      task.icon = categories[task.category]!["icon"];
-      print("compute-----------");
-      return task;
-    }).toList();
-    return new_asks_array;
-  }
 }
