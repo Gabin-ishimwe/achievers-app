@@ -2,6 +2,7 @@ import 'package:achievers_app/models/task_model.dart';
 import 'package:achievers_app/screens/timer.dart';
 import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Todo {
@@ -25,14 +26,6 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
     super.initState();
     all_tasks = Db.allTasks() as Future<List<Task>>;
   }
-
-  // List<Todo> todos = [
-  //   Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-  //   Todo('Working out', 0xFFF54336, Icons.fitness_center, '45 minutes'),
-  //   Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
-  //   Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
-  //   Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -177,11 +170,19 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                   children: <Widget>[
                                     InkWell(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TimerScreen()));
+                                        Get.to(TimerScreen(), arguments: {
+                                          'taskId': todos[index].id
+                                        });
+
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             TimerScreen(),
+                                        //     settings: RouteSettings(
+                                        //       arguments:
+                                        //           TaskId(todos[index].id),
+                                        //     ),));
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(
@@ -236,7 +237,8 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                                     todos[index].description,
                                                     style: TextStyle(
                                                         fontSize: 11,
-                                                        color: Color(0xFF7C7575)),
+                                                        color:
+                                                            Color(0xFF7C7575)),
                                                   ),
                                                   trailing: Container(
                                                     width: 40,

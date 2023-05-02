@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
 import 'package:achievers_app/screens/calendar.dart';
 import 'package:achievers_app/widgets/today_tasks.dart';
+import 'package:achievers_app/widgets/create_task_widget.dart';
+import 'package:achievers_app/screens/create_task.dart';
+import 'package:achievers_app/screens/sign_in_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +25,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(LongBreakTimerController());
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Task Achievers App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: CalendarPage(),
+      home: SignInScreen(),
     );
   }
 }

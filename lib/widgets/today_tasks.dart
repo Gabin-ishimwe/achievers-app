@@ -3,6 +3,7 @@ import 'package:achievers_app/screens/timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 
 class Todo {
   String title;
@@ -15,6 +16,11 @@ class Todo {
 class TodayTasksScreen extends StatefulWidget {
   @override
   State<TodayTasksScreen> createState() => _TodayTasksScreen();
+}
+
+class TaskId {
+  final String? id;
+  TaskId(this.id);
 }
 
 class _TodayTasksScreen extends State<TodayTasksScreen> {
@@ -42,19 +48,6 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
 
     super.initState();
   }
-
-  // List<Todo> todos = [
-  //   Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-  //   Todo('Working out', 0xFFF54336, Icons.fitness_center, '45 minutes'),
-  //   Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
-  //   Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
-  //   Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
-  //   Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-  //   Todo('Working out', 0xFFF54336, Icons.health_and_safety, '45 minutes'),
-  //   Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
-  //   Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
-  //   Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +94,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var todos = snapshot.data;
-                  
+
                   return Container(
                       margin: EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
@@ -114,12 +107,18 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TimerScreen()));
+                                    onTap: () {        
+                                      Get.to(TimerScreen(), arguments: {'taskId': todos[index].id});
+
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) => TimerScreen(),
+                                      //       settings: RouteSettings(
+                                      //         arguments:
+                                      //             TaskId(todos[index].id),
+                                      //       ),
+                                      //     ));
                                     },
                                     child: Slidable(
                                       endActionPane: ActionPane(
@@ -303,7 +302,7 @@ class Db {
 
   static final _db = FirebaseFirestore.instance;
   static Future<List<Task>> allTasks() async {
-    final snapshot = await _db.collection("tasks").get();
+    final snapshot = await _db.collection("userTasks").get();
     var taskData =
         snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
 

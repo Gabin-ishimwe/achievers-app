@@ -11,6 +11,7 @@ class UserRepository {
         .add(userModel.toJson())
         .whenComplete(() => printInfo(info: "User has been created"))
         .catchError((error) {
+      print(error);
       printError(info: "Something went wrong !!!");
     });
   }
