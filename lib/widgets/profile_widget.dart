@@ -91,6 +91,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EditProfileWidget(
+                                                      imageUrl: 'https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg',
                                                         fullName:
                                                             userData.fullName!,
                                                         email: userData.email!,
