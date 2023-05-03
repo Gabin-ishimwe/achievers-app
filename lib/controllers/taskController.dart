@@ -26,7 +26,6 @@ class TaskController {
     var taskData = Task.fromSnapshot(snapshot);
     taskData.color = categories[taskData.category]!["color"];
     taskData.icon = categories[taskData.category]!["icon"];
-    print(taskData);
     return taskData;
   }
 

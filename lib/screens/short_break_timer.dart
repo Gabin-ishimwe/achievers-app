@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:achievers_app/screens/long_break_timer.dart';
-import 'package:achievers_app/screens/timer.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../controllers/taskController.dart';
 import '../models/task_model.dart';
-import '../widgets/today_tasks.dart';
 
 var taskId;
 var completed_sessionss;
@@ -15,7 +13,7 @@ class ShortBreakTimerController extends GetxController {
   Timer? _timer;
   int remainingSeconds = 0;
   int periodTime = 0;
-  var time = '25:00'.obs;
+  var time = '00:00'.obs;
   bool running = false;
   final percentage = '1'.obs;
   var icon = Icons.play_arrow.obs;
@@ -44,8 +42,15 @@ class ShortBreakTimerController extends GetxController {
     const duration = Duration(seconds: 1);
     // remainingSeconds = seconds;
     _timer = Timer.periodic(duration, (Timer timer) async {
-      if (remainingSeconds == 0) {
+      if (remainingSeconds == -1) {
         timer.cancel();
+        Task? task = await TaskController.getSingleTask(taskId);
+        percentage.value = '1';
+        icon.value = Icons.play_arrow;
+        running = false;
+        remainingSeconds = task!.short_break * 60;
+        periodTime = remainingSeconds;
+        time.value = "${task.short_break}:00";
         Get.to(TimerScreen(), arguments: {'taskId': taskId});
       } else {
         int minutes = remainingSeconds ~/ 60;
@@ -69,10 +74,26 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
   final timeController = Get.put(ShortBreakTimerController());
   IconData icon_value = Icons.play_arrow;
 
+  update_task() async {
+    Task? task = await TaskController.getSingleTask(taskId);
+    task!.completed_sessions--;
+    await TaskController.updateTask(taskId, {
+      'completed_sessions': task.completed_sessions,
+    });
+    timeController.remainingSeconds = task.short_break * 60;
+    timeController.percentage.value = '1';
+    timeController.icon.value = Icons.play_arrow;
+    timeController.running = false;
+    timeController.periodTime = timeController.remainingSeconds;
+    timeController.time.value = "${task.short_break}:00";
+    print(task.completed_sessions);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map args = Get.arguments;
     taskId = args['taskId'];
+    print(taskId);
     Future<Task?> task = TaskController.getSingleTask(taskId);
     return SafeArea(
         child: Scaffold(
@@ -89,7 +110,8 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                       child: InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          await update_task();
                           Navigator.pop(context);
                         },
                         child: Icon(
@@ -116,10 +138,18 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var task_data = snapshot.data!;
-                  timeController._setProperties(
-                    (task_data.short_break * 60),
-                    task_data.short_break,
-                  );
+                  if (task_data.completed_sessions == 1 ||
+                      task_data.long_break_starts == 1 ||
+                      timeController.remainingSeconds == 0) {
+                    timeController._setProperties(
+                      (task_data.short_break * 60),
+                      task_data.short_break,
+                    );
+                  }
+                  // else{
+                  //   timeController.remainingSeconds = task_data.short_break * 60;
+                  //   timeController.time.value = "${task_data.short_break}:00";
+                  // }
 
                   return Container(
                       height: 580, // Set a fixed height
@@ -343,17 +373,25 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
                                                     new Icon(Icons.arrow_right),
                                                 color: Color(0xFFcccccc),
                                                 onPressed: () {
-                                                  // if (currentIndex <=
-                                                  //     timerContents.length -
-                                                  //         1) {
-                                                  //   // navigate on another screen
-                                                  //   _controller.nextPage(
-                                                  //       duration:
-                                                  //           const Duration(
-                                                  //               milliseconds:
-                                                  //                   400),
-                                                  //       curve: Curves.ease);
-                                                  // }
+                                                  timeController
+                                                          .remainingSeconds =
+                                                      task_data.short_break *
+                                                          60;
+                                                  timeController
+                                                      .percentage.value = '1';
+                                                  timeController.icon.value =
+                                                      Icons.play_arrow;
+                                                  timeController.running =
+                                                      false;
+                                                  timeController.periodTime =
+                                                      timeController
+                                                          .remainingSeconds;
+                                                  timeController.time.value =
+                                                      "${task_data.short_break}:00";
+                                                  Get.to(TimerScreen(),
+                                                      arguments: {
+                                                        'taskId': taskId
+                                                      });
                                                 })),
                                       )
                                     ]),

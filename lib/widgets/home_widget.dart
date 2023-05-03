@@ -1,5 +1,5 @@
 import 'package:achievers_app/models/task_model.dart';
-import 'package:achievers_app/screens/timer.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

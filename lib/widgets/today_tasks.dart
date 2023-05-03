@@ -1,5 +1,5 @@
 import 'package:achievers_app/models/task_model.dart';
-import 'package:achievers_app/screens/timer.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -35,10 +35,6 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // Db.allTasks().then((value) {
-    //   all_tasks = Db.allTasks();
-    // }).catchError((err) => print(err));
     all_tasks = Db.allTasks();
     _getTasksLength().then((value) {
       setState(() {

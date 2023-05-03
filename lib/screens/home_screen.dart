@@ -1,5 +1,5 @@
 import 'package:achievers_app/repositories/auth_repository.dart';
-import 'package:achievers_app/screens/timer.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:achievers_app/widgets/create_task_widget.dart';
 import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
