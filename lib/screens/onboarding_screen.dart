@@ -33,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-            body: Container(
+            body: SizedBox(
               // color: Colors.white,
               height: screenHeigth,
               width: screenWidth,
@@ -56,22 +56,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           alignment: Alignment.bottomCenter,
                           child: Container(
                             // color: Colors.red,
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            // color: Colors.red,
                             child: Image.asset(onboardContents[index].image),
-                            padding: EdgeInsets.only(left: 20, right: 20),
                           ),
                         ),
                       ),
                       Expanded(
                         flex: 5,
                         child: Container(
-                          padding: EdgeInsets.only(left: 20, right: 20),
+                          padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
                                   onboardContents[index].description,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
@@ -108,141 +109,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                             const Duration(milliseconds: 400),
                                         curve: Curves.ease);
                                   },
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      padding: const EdgeInsets.all(15)),
                                   child: Text(
                                     currentIndex == onboardContents.length - 1
                                         ? "Continue"
                                         : "Next",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      padding: EdgeInsets.all(15)),
                                 )
                               ]),
                         ),
                       )
-                      //   Container(
-                      //   padding: const EdgeInsets.all(20),
-                      //   child: Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //       children: [
-                      //         Expanded(
-                      //           flex: 7,
-                      //           child: Container(
-                      //             padding: const EdgeInsets.all(15),
-                      //             decoration: BoxDecoration(
-                      //               borderRadius: BorderRadius.circular(10.0),
-                      //               color:
-                      //                   const Color.fromARGB(255, 255, 234, 233),
-                      //             ),
-                      //             child: Column(children: [
-                      //               Align(
-                      //                 alignment: Alignment.topRight,
-                      //                 child: Container(
-                      //                   margin: EdgeInsets.zero,
-                      //                   padding: EdgeInsets.zero,
-                      //                   child: TextButton(
-                      //                     onPressed: (() {
-                      //                       // skip onboarding
-                      //                       // navigate to other screen
-                      //                       Navigator.push(context,
-                      //                           MaterialPageRoute(
-                      //                               builder: ((context) {
-                      //                         return const WelcomeScreen();
-                      //                       })));
-                      //                     }),
-                      //                     style: TextButton.styleFrom(
-                      //                         padding: const EdgeInsets.all(0),
-                      //                         splashFactory:
-                      //                             NoSplash.splashFactory),
-                      //                     child: Text(
-                      //                       "Skip",
-                      //                       style: GoogleFonts.poppins(
-                      //                           textStyle: const TextStyle(
-                      //                         color: Color.fromARGB(
-                      //                             255, 235, 53, 34),
-                      //                         fontSize: 14,
-                      //                       )),
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //               Align(
-                      //                 alignment: Alignment.center,
-                      //                 child: Padding(
-                      //                   padding: const EdgeInsets.symmetric(
-                      //                       vertical: 10),
-                      //                   child: SvgPicture.asset(
-                      //                     onboardContents[index].image,
-                      //                     semanticsLabel: "logo",
-                      //                     height: 250,
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //               const SizedBox(
-                      //                 height: 30,
-                      //               ),
-                      //               Row(
-                      //                   mainAxisAlignment:
-                      //                       MainAxisAlignment.center,
-                      //                   children: List.generate(
-                      //                     onboardContents.length,
-                      //                     (index) => Container(
-                      //                         height: 10,
-                      //                         width:
-                      //                             currentIndex == index ? 25 : 10,
-                      //                         margin:
-                      //                             const EdgeInsets.only(right: 5),
-                      //                         decoration: BoxDecoration(
-                      //                           borderRadius:
-                      //                               BorderRadius.circular(20),
-                      //                           color: const Color.fromARGB(
-                      //                               255, 235, 53, 34),
-                      //                         )),
-                      //                   ))
-                      //             ]),
-                      //           ),
-                      //         ),
-                      //         Expanded(
-                      //             flex: 3,
-                      //             child: Padding(
-                      //               padding:
-                      //                   const EdgeInsets.symmetric(vertical: 15),
-                      //               child: Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.stretch,
-                      //                   mainAxisSize: MainAxisSize.max,
-                      //                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //                   children: [
-                      //                     Padding(
-                      //                       padding: const EdgeInsets.symmetric(
-                      //                         horizontal: 20,
-                      //                       ),
-                      //                       child: Text(
-                      //                         onboardContents[index].title,
-                      //                         style: GoogleFonts.poppins(
-                      //                             textStyle: const TextStyle(
-                      //                                 fontSize: 24,
-                      //                                 fontWeight:
-                      //                                     FontWeight.bold)),
-                      //                         textAlign: TextAlign.center,
-                      //                       ),
-                      //                     ),
-                      //                     Padding(
-                      //                       padding: const EdgeInsets.symmetric(
-                      //                           horizontal: 20, vertical: 5),
-                      //                       child: Text(
-                      //                         onboardContents[index].description,
-                      //                         style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                      //                         textAlign: TextAlign.center,
-                      //                       ),
-                      //                     ),
-                      //                   ]),
-                      //             )),
-                      //       ]),
-                      // ),
                     ]);
                   }),
             )));

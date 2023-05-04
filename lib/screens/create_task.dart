@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 // CreateTaskPage is a stateful widget that holds a page where the user can create a task
@@ -17,6 +18,11 @@ class _CreateTaskPage extends State<CreateTaskPage> {
   var sessions = 0.0;
   var short_break = 0.0;
   var long_break = 0.0;
+  
+  TextEditingController? dateController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  TextEditingController? timeController = TextEditingController();
+  String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -128,8 +134,14 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                         ),
                         Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                         TextFormField(
+                          controller: dateController,
                           decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.calendar_month),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.calendar_month),
+                                onPressed: () {
+                                  _getDateFromUser();
+                                },
+                              ),
                               suffixIconColor: Color(0xFFC1C1C1),
                               fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
                               filled: true,
@@ -137,7 +149,7 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none),
-                              hintText: "Date",
+                              hintText: DateFormat.yMd().format(_selectedDate),
                               hintStyle: TextStyle(
                                 color: Color(0xFFC1C1C1),
                               )),
@@ -159,8 +171,14 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                         ),
                         Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                         TextFormField(
+                          controller: timeController,
                           decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.access_time),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.access_time),
+                                onPressed: () {
+                                  _getTimeFromUser();
+                                },
+                              ),
                               suffixIconColor: Color(0xFFC1C1C1),
                               fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
                               filled: true,
@@ -168,7 +186,7 @@ class _CreateTaskPage extends State<CreateTaskPage> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none),
-                              hintText: "Start time",
+                              hintText: _startTime,
                               hintStyle: TextStyle(
                                 color: Color(0xFFC1C1C1),
                               )),
@@ -378,5 +396,44 @@ class _CreateTaskPage extends State<CreateTaskPage> {
         ),
       ),
     );
+  }
+
+  _getDateFromUser() async {
+    DateTime? _pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023),
+        lastDate: DateTime(2121));
+
+    if (_pickerDate != null) {
+      setState(() {
+        _selectedDate = _pickerDate;
+        print(_selectedDate);
+      });
+    } else {
+      print("it's null date");
+    }
+  }
+
+  _getTimeFromUser() async {
+    var _pickedTime = await _showTimePicker();
+    String _formatedTime = _pickedTime.format(context);
+    if (_pickedTime == null) {
+      print("it's null time");
+    } else {
+      setState(() {
+        _startTime = _formatedTime;
+        print(_startTime);
+      });
+    }
+  }
+
+  _showTimePicker() {
+    return showTimePicker(
+        initialEntryMode: TimePickerEntryMode.input,
+        context: context,
+        initialTime: TimeOfDay(
+            hour: int.parse(_startTime.split(":")[0]),
+            minute: int.parse(_startTime.split(":")[1].split(" ")[0])));
   }
 }
