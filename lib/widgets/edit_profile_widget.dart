@@ -5,13 +5,14 @@ import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProfileWidget extends StatefulWidget {
   String fullName;
   String email;
   String id;
-  final String imageUrl;
+  String imageUrl;
 
   EditProfileWidget(
       {super.key,
@@ -35,6 +36,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   var emailController = TextEditingController();
   var fullNameController = TextEditingController();
   var preferredNameController = TextEditingController();
+  var _imageUrl;
   File? _imageFile;
 
   @override
@@ -42,6 +44,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     emailController.text = widget.email;
     fullNameController.text = widget.fullName;
     preferredNameController.text = widget.fullName;
+    _imageUrl = widget.imageUrl!;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -89,7 +93,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                     children: [
                       CircleAvatar(
                           backgroundImage: _imageFile == null
-                              ? NetworkImage(widget.imageUrl) as ImageProvider : FileImage(_imageFile!),
+                              ? NetworkImage(widget.imageUrl!) as ImageProvider
+                              : FileImage(_imageFile!),
                           radius: 100.0),
                       Positioned(
                           bottom: 0,
@@ -357,12 +362,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   width: 150,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      UserModel userModel = UserModel(
-                                          id: widget.id,
-                                          fullName: fullNameController.text,
-                                          email: emailController.text);
-                                      await UserRepository()
-                                          .updateUser(userModel);
+                                      // UserModel userModel = UserModel(
+                                      //     id: widget.id,
+                                      //     fullName: fullNameController.text,
+                                      //     email: emailController.text);
+                                      // await UserRepository()
+                                      //     .updateUser(userModel);
+                                      _updateUser();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -421,5 +427,35 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     } on PlatformException catch (e) {
       print('Failed to take image: $e');
     }
+  }
+
+  Future<void> _updateUser() async {
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(widget.id);
+    if (_imageFile != null) {
+      print(_imageFile);
+      final FirebaseStorage storage = FirebaseStorage.instance;
+      final Reference ref =
+          storage.ref().child('profile_images/${DateTime.now().toString()}');
+
+      try{
+        final UploadTask uploadTask = ref.putFile(_imageFile!);
+
+        final TaskSnapshot downloadUrl = await uploadTask.whenComplete(() {});
+
+        final String url = await downloadUrl.ref.getDownloadURL();
+
+        setState(() {
+          _imageUrl = url;
+        });
+      } catch (error){
+
+      }
+    }
+    await userRef.update({
+      'imageUrl': _imageUrl,
+      'fullName': fullNameController.text,
+      'email': emailController.text
+    });
   }
 }

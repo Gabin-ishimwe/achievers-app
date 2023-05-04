@@ -5,10 +5,11 @@ class UserModel {
   String? fullName;
   String? email;
   String? password;
-  UserModel({this.id, this.fullName, this.email, this.password});
+  String? imageUrl;
+  UserModel({this.id, this.fullName, this.email, this.password, this.imageUrl});
 
   toJson() {
-    return {"fullName": fullName, "email": email, "password": password};
+    return {"fullName": fullName, "email": email, "password": password, "imageUrl": imageUrl};
   }
 
   // map user fetch from db to UserModel
@@ -19,6 +20,8 @@ class UserModel {
         id: document.id,
         fullName: data['fullName'],
         email: data["email"],
-        password: data["password"]);
+        password: data["password"],
+        imageUrl: data["imageUrl"]);
+
   }
 }
