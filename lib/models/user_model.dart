@@ -9,7 +9,12 @@ class UserModel {
   UserModel({this.id, this.fullName, this.email, this.password, this.imageUrl});
 
   toJson() {
-    return {"fullName": fullName, "email": email, "password": password, "imageUrl": imageUrl};
+    return {
+      "fullName": fullName,
+      "email": email,
+      "password": password,
+      "imageUrl": imageUrl
+    };
   }
 
   // map user fetch from db to UserModel
@@ -22,6 +27,5 @@ class UserModel {
         email: data["email"],
         password: data["password"],
         imageUrl: data["imageUrl"]);
-
   }
 }

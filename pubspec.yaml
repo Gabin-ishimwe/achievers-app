@@ -52,6 +52,10 @@ dependencies:
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
   flutter_ringtone_player: ^3.2.0
+  flutter_local_notifications: ^14.0.0+1
+  flutter_native_timezone: ^2.0.0
+  rxdart: ^0.27.7
+  audioplayers: ^4.0.1
   sticky_headers: "^0.3.0"
   calendar_flutter: ^1.0.0
   mocktail: ^0.3.0
@@ -86,6 +90,7 @@ flutter:
     - assets/logo/
     - assets/profile/
     - assets/images/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

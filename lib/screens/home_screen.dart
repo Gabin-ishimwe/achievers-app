@@ -1,9 +1,13 @@
 import 'package:achievers_app/screens/calendar.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:achievers_app/widgets/create_task_widget.dart';
 import 'package:achievers_app/widgets/home_widget.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:achievers_app/widgets/statistic_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../helpers/notification.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +25,23 @@ class _HomeScreenState extends State<HomeScreen> {
     const ProfileWidget(),
   ];
   int currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationClass.init();
+    listenNotifications();
+  }
+
+  void listenNotifications() {
+    NotificationClass.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) {
+    print('clicked on notification home screen $payload');
+    Get.to(const TimerScreen(), arguments: {'taskId': payload});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

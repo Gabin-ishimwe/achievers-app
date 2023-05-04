@@ -108,7 +108,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                 children: <Widget>[
                                   InkWell(
                                     onTap: () {
-                                      Get.to(TimerScreen(), arguments: {
+                                      Get.to(const TimerScreen(), arguments: {
                                         'taskId': todos[index].id
                                       });
 
