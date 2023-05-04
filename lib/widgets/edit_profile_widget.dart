@@ -1,14 +1,22 @@
+import 'dart:io';
 import 'package:achievers_app/models/user_model.dart';
 import 'package:achievers_app/repositories/user_repository.dart';
 import 'package:achievers_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProfileWidget extends StatefulWidget {
   String fullName;
   String email;
   String id;
+  String imageUrl;
+
   EditProfileWidget(
       {super.key,
+      required this.imageUrl,
       required this.fullName,
       required this.email,
       required this.id});
@@ -28,12 +36,16 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   var emailController = TextEditingController();
   var fullNameController = TextEditingController();
   var preferredNameController = TextEditingController();
+  var _imageUrl;
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
     emailController.text = widget.email;
     fullNameController.text = widget.fullName;
     preferredNameController.text = widget.fullName;
+    _imageUrl = widget.imageUrl!;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -80,8 +92,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   Stack(
                     children: [
                       CircleAvatar(
-                          backgroundImage:
-                              AssetImage("assets/profile/gabin.jpeg"),
+                          backgroundImage: _imageFile == null
+                              ? NetworkImage(widget.imageUrl!) as ImageProvider
+                              : FileImage(_imageFile!),
                           radius: 100.0),
                       Positioned(
                           bottom: 0,
@@ -95,7 +108,122 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               ),
                               child: IconButton(
                                   onPressed: () {
-                                    // do something
+                                    showModalBottomSheet(
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                              decoration: BoxDecoration(
+                                                  // color: Colors.deepPurple,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30))),
+                                              child: Wrap(
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  SizedBox(height: 20),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Text(
+                                                        "Select image source",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            color: Colors
+                                                                .deepPurple)),
+                                                  ),
+                                                  SizedBox(height: 25),
+                                                  Divider(
+                                                      indent: 40,
+                                                      endIndent: 40,
+                                                      thickness: 2,
+                                                      color: Colors.black
+                                                          .withOpacity(.20)),
+                                                  SizedBox(height: 30),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 350,
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            _takeImage();
+                                                          },
+                                                          child: Text(
+                                                            "Take picture",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                color: Colors
+                                                                    .deepPurple),
+                                                          ),
+                                                          style: ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.deepPurple[
+                                                                      100],
+                                                              elevation: 0,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(15),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50))),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      SizedBox(
+                                                        width: 350,
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            _selectImage();
+                                                          },
+                                                          child: Text(
+                                                            "Choose from camera roll",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                color: Colors
+                                                                    .deepPurple),
+                                                          ),
+                                                          style: ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.deepPurple[
+                                                                      100],
+                                                              elevation: 0,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(15),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50))),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ));
+                                        });
                                   },
                                   icon: Icon(
                                     Icons.add,
@@ -135,7 +263,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide.none),
-                                  hintText: "Gabin ISHIMWE",
                                   hintStyle: TextStyle(
                                     color: Color(0xFFC1C1C1),
                                   )),
@@ -164,7 +291,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide.none),
-                                  hintText: "Gabin",
                                   hintStyle: TextStyle(
                                     color: Color(0xFFC1C1C1),
                                   )),
@@ -193,7 +319,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide.none),
-                                  hintText: "g.ishimwe@alustudent.com",
                                   hintStyle: TextStyle(
                                     color: Color(0xFFC1C1C1),
                                   )),
@@ -237,12 +362,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   width: 150,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      UserModel userModel = UserModel(
-                                          id: widget.id,
-                                          fullName: fullNameController.text,
-                                          email: emailController.text);
-                                      await UserRepository()
-                                          .updateUser(userModel);
+                                      // UserModel userModel = UserModel(
+                                      //     id: widget.id,
+                                      //     fullName: fullNameController.text,
+                                      //     email: emailController.text);
+                                      // await UserRepository()
+                                      //     .updateUser(userModel);
+                                      _updateUser();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -275,5 +401,61 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
         ),
       ),
     );
+  }
+
+  Future _selectImage() async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _imageFile = File(pickedFile!.path);
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future _takeImage() async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+
+      setState(() {
+        _imageFile = File(pickedFile!.path);
+      });
+    } on PlatformException catch (e) {
+      print('Failed to take image: $e');
+    }
+  }
+
+  Future<void> _updateUser() async {
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(widget.id);
+    if (_imageFile != null) {
+      print(_imageFile);
+      final FirebaseStorage storage = FirebaseStorage.instance;
+      final Reference ref =
+          storage.ref().child('profile_images/${DateTime.now().toString()}');
+
+      try{
+        final UploadTask uploadTask = ref.putFile(_imageFile!);
+
+        final TaskSnapshot downloadUrl = await uploadTask.whenComplete(() {});
+
+        final String url = await downloadUrl.ref.getDownloadURL();
+
+        setState(() {
+          _imageUrl = url;
+        });
+      } catch (error){
+
+      }
+    }
+    await userRef.update({
+      'imageUrl': _imageUrl,
+      'fullName': fullNameController.text,
+      'email': emailController.text
+    });
   }
 }
