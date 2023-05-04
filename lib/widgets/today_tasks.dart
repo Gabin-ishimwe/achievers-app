@@ -298,7 +298,7 @@ class Db {
 
   static final _db = FirebaseFirestore.instance;
   static Future<List<Task>> allTasks() async {
-    final snapshot = await _db.collection("userTasks").get();
+    final snapshot = await _db.collection("TasksTest").get();
     var taskData =
         snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
 

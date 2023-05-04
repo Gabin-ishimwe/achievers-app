@@ -1,7 +1,12 @@
+import "package:achievers_app/helpers/notification.dart";
 import "package:achievers_app/models/task_model.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
 import "package:select_form_field/select_form_field.dart";
+
+import "../screens/session_timer.dart";
 
 class CreateTaskWidget extends StatefulWidget {
   const CreateTaskWidget({super.key});
@@ -39,6 +44,30 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   List<Map<String, dynamic>>? dropdownItems = [];
   List options = [];
   var _selectedLongBreakStarts = 0;
+
+  // NotificationService? notificationObject;
+
+  // void initState(){
+  //   super.initState();
+
+  //   notificationObject = NotificationService();
+  // }
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationClass.init(initScheduled: true);
+    listenNotifications();
+  }
+
+  void listenNotifications() {
+    NotificationClass.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) {
+    print('clicked on notification $payload');
+    Get.to(TimerScreen(), arguments: {'taskId': payload});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -338,11 +367,16 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       onChanged: ((value) {
                         setState(() {
                           sessions = value;
-                          options = List.generate(value.toInt(), (index) => index);;
+                          options =
+                              List.generate(value.toInt(), (index) => index);
+                          ;
                           // options = options.map((i) => i.toString()).toList();
                           dropdownItems = options
-                              .map((number) =>
-                                  (({"value": number, "label": number == 0 ? 'No long break' : number})))
+                              .map((number) => (({
+                                    "value": number,
+                                    "label":
+                                        number == 0 ? 'No long break' : number
+                                  })))
                               .toList();
                         });
                       }),
@@ -489,7 +523,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   int long_break = -1;
                   if (selectedValue != null) {
                     long_break = int.parse(selectedValue);
-                  } 
+                  }
                   if (title_controller.text != null ||
                       description_controller.text != null ||
                       date_controller.text != null ||
@@ -513,9 +547,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         long_break: int.parse(long_break_controller.text),
                         long_break_starts: long_break,
                         completed_sessions: 0,
-                        completed: false
-                        );
-                        
+                        completed: false);
+
                     createTask(new_task);
                   }
                 },
@@ -538,9 +571,28 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
 
   Future createTask(task) async {
     final docTask = await FirebaseFirestore.instance
-        .collection("userTasks")
+        .collection("TasksTest")
         .add(task.toJson())
         .whenComplete(() => print("task created"))
         .catchError((err) => {throw err});
+
+    // await notificationObject?.scheduleNotificationForTask(task);
+    // print("scheduled notification");
+    // NotificationClass.showNotification(
+    //   title: 'Task reminder',
+    //   body: 'It\'s time to start "${task.title}"',
+    //   payload: task.id,
+    // );
+    // print('task id is ${docTask} ${docTask.id}');
+    // NotificationClass.init();
+
+    var time = DateFormat.jm()
+        .format(DateTime.parse('${task.date} ${task.start_time}'));
+    NotificationClass.showScheduledNotification(
+      title: 'Achievers app task reminder',
+      body: '$time: It\'s time to start "${task.title}"',
+      payload_data: docTask.id,
+      scheduledDate: DateTime.parse('${task.date} ${task.start_time}'),
+    );
   }
 }

@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:achievers_app/controllers/taskController.dart';
 import 'package:achievers_app/screens/short_break_timer.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 
 var taskId;
-var completed_sessionss;
 
 class TimerController extends GetxController {
   Timer? _timer;
@@ -34,13 +36,15 @@ class TimerController extends GetxController {
   }
 
   _setProperties(remainingSeconds, time) {
-    print('in set properties: $remainingSeconds, $time');
     this.remainingSeconds = remainingSeconds;
-    print('just assigned rem sec');
     this.periodTime = remainingSeconds;
-    print('just assigned period time');
     this.time.value = "$time:00";
-    print('done');
+  }
+
+  play_audio() async {
+    final player = AudioPlayer();
+    await player.play(AssetSource('/audio/alarm.mp3'));
+    return 'done';
   }
 
   _startTimer() async {
@@ -51,31 +55,38 @@ class TimerController extends GetxController {
       if (remainingSeconds == -1) {
         timer.cancel();
 
-        print('taskId = $taskId');
-        Task? task = await TaskController.getSingleTask(taskId);
-        task!.completed_sessions++;
-        remainingSeconds = task.working_session_duration * 60;
-        percentage.value = '1';
-        icon.value = Icons.play_arrow;
-        running = false;
-        periodTime = remainingSeconds;
-        if (task.working_sessions == task.completed_sessions) {
-          await TaskController.updateTask(taskId, {
-            'completed_sessions': task.completed_sessions,
-            'completed': true
-          });
-          time.value = "${task.working_session_duration}:00";
-        } else {
-          await TaskController.updateTask(
-              taskId, {'completed_sessions': task.completed_sessions});
-          if (task.long_break_starts == task.completed_sessions) {
+        final player = AudioPlayer();
+        player.play(AssetSource('/audio/alarm.mp3'));
+
+        Future.delayed(const Duration(seconds: 5), () async {
+          Task? task = await TaskController.getSingleTask(taskId);
+          task!.completed_sessions++;
+          remainingSeconds = task.working_session_duration * 60;
+          percentage.value = '1';
+          icon.value = Icons.play_arrow;
+          running = false;
+          periodTime = remainingSeconds;
+          if (task.working_sessions == task.completed_sessions) {
+            await TaskController.updateTask(taskId, {
+              'completed_sessions': task.completed_sessions,
+              'completed': true
+            });
             time.value = "${task.working_session_duration}:00";
-            Get.to(LongBreakTimerScreen(), arguments: {'taskId': taskId});
           } else {
-            time.value = "${task.working_session_duration}:00";
-            Get.to(ShortBreakTimerScreen(), arguments: {'taskId': taskId});
+            await TaskController.updateTask(
+                taskId, {'completed_sessions': task.completed_sessions});
+            if (task.long_break_starts == task.completed_sessions) {
+              time.value = "${task.working_session_duration}:00";
+              await player.dispose();
+              Get.to(LongBreakTimerScreen(), arguments: {'taskId': taskId});
+            } else {
+              time.value = "${task.working_session_duration}:00";
+              await player.dispose();
+              Get.to(ShortBreakTimerScreen(), arguments: {'taskId': taskId});
+            }
           }
-        }
+        });
+        
       } else {
         int minutes = remainingSeconds ~/ 60;
         int seconds = (remainingSeconds % 60);
@@ -98,21 +109,6 @@ class _TimerScreen extends State<TimerScreen> {
   final timeController = Get.put(TimerController());
   IconData icon_value = Icons.play_arrow;
 
-  // initializeTimerController() async {
-  //   Task? task = await TaskController.getSingleTask(taskId);
-  //   timeController._setProperties(
-  //     (task!.working_session_duration * 60),
-  //     task.working_session_duration,
-  //   );
-  //   print(
-  //       'timeController in session timer: ${timeController.time}, ${timeController.remainingSeconds} ');
-  // }
-
-  // void initState() {
-  //   initializeTimerController();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     // taskId = ModalRoute.of(context)?.settings.arguments as TaskId;
@@ -120,7 +116,7 @@ class _TimerScreen extends State<TimerScreen> {
     taskId = args['taskId'];
     print('session timer taskId $taskId');
     Future<Task?> task = TaskController.getSingleTask(taskId);
-    var taskStream;
+
     update_task() async {
       Task? task = await TaskController.getSingleTask(taskId);
       timeController.remainingSeconds = task!.working_session_duration * 60;
@@ -442,19 +438,23 @@ class _TimerScreen extends State<TimerScreen> {
                                                     });
                                                     timeController.time.value =
                                                         "${task_data.working_session_duration}:00";
-                                                    Get.to(
-                                                        CompleteDailyTask(),
+                                                    Get.to(CompleteDailyTask(),
                                                         arguments: {
                                                           'taskId': taskId
                                                         });
                                                   } else {
                                                     await TaskController
                                                         .updateTask(taskId, {
-                                                      'completed_sessions': task_data.completed_sessions
+                                                      'completed_sessions':
+                                                          task_data
+                                                              .completed_sessions
                                                     });
-                                                    if (task_data.long_break_starts ==
-                                                        task_data.completed_sessions) {
-                                                      timeController.time.value =
+                                                    if (task_data
+                                                            .long_break_starts ==
+                                                        task_data
+                                                            .completed_sessions) {
+                                                      timeController
+                                                              .time.value =
                                                           "${task_data.working_session_duration}:00";
                                                       Get.to(
                                                           LongBreakTimerScreen(),
@@ -462,7 +462,8 @@ class _TimerScreen extends State<TimerScreen> {
                                                             'taskId': taskId
                                                           });
                                                     } else {
-                                                      timeController.time.value =
+                                                      timeController
+                                                              .time.value =
                                                           "${task_data.working_session_duration}:00";
                                                       Get.to(
                                                           ShortBreakTimerScreen(),

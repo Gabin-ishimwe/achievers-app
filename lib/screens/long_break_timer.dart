@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:achievers_app/screens/session_timer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -44,14 +45,21 @@ class LongBreakTimerController extends GetxController {
     _timer = Timer.periodic(duration, (Timer timer) async {
       if (remainingSeconds == -1) {
         timer.cancel();
-        Task? task = await TaskController.getSingleTask(taskId);
-        percentage.value = '1';
-        icon.value = Icons.play_arrow;
-        running = false;
-        remainingSeconds = task!.long_break * 60;
-        periodTime = remainingSeconds;
-        time.value = "${task.long_break}:00";
-        Get.to(TimerScreen(), arguments: {'taskId': taskId});
+
+        final player = AudioPlayer();
+        player.play(AssetSource('/audio/alarm.mp3'));
+
+        Future.delayed(const Duration(seconds: 5), () async {
+          Task? task = await TaskController.getSingleTask(taskId);
+          percentage.value = '1';
+          icon.value = Icons.play_arrow;
+          running = false;
+          remainingSeconds = task!.long_break * 60;
+          periodTime = remainingSeconds;
+          time.value = "${task.long_break}:00";
+          await player.dispose();
+          Get.to(TimerScreen(), arguments: {'taskId': taskId});
+        });
       } else {
         int minutes = remainingSeconds ~/ 60;
         int seconds = (remainingSeconds % 60);
