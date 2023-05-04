@@ -5,10 +5,27 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
+  
+  if (isJailbroken) {
+    print("This app cannot run on a jailbroken device.");
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+              "This app cannot run on a Jailbroken or rooted devices have more privileges and enable easy installation of malware and viruses."),
+        ),
+      ),
+    ));
+    return;
+  }
   runApp(const MyApp());
 }
 
