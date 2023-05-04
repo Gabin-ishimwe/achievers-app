@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:intl/intl.dart';
 import 'package:achievers_app/models/task_model.dart';
-import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:achievers_app/screens/timer.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
+import '../repositories/task_repository.dart';
+
 class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
   @override
   _CalendarPageState createState() => _CalendarPageState();
 }
@@ -31,7 +33,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    all_tasks = Db.allTasks() as Future<List<Task>>;
+    all_tasks = Db.allTasks();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Scroll to today's date after the page has finished building
       _scrollToToday();
@@ -49,7 +51,7 @@ class _CalendarPageState extends State<CalendarPage> {
     final todayPosition = (today.day - 1) * 60.0;
     _scrollController.animateTo(
       todayPosition,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
@@ -59,7 +61,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(60),
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
@@ -67,10 +69,10 @@ class _CalendarPageState extends State<CalendarPage> {
             title: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: Image.asset('assets/profile/logo.png'),
                 ),
-                Text(
+                const Text(
                   'Achievers',
                   style: TextStyle(
                       color: Colors.black,
@@ -91,14 +93,14 @@ class _CalendarPageState extends State<CalendarPage> {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF04060F).withOpacity(0.05),
+                        color: const Color(0xFF04060F).withOpacity(0.05),
                         spreadRadius: 3,
                         blurRadius: 10,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Column(
                     children: [
                       Container(
@@ -107,7 +109,8 @@ class _CalendarPageState extends State<CalendarPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.arrow_back, color: Colors.white),
+                              icon: const Icon(Icons.arrow_back,
+                                  color: Colors.white),
                               onPressed: () {
                                 setState(() {
                                   _selectedDate = DateTime(
@@ -121,14 +124,14 @@ class _CalendarPageState extends State<CalendarPage> {
                             ),
                             Text(
                               DateFormat('MMMM yyyy').format(_selectedDate),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
                             IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_forward,
                                 color: Colors.white,
                               ),
@@ -148,7 +151,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                       Container(
                         height: 95,
-                        margin: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                        margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                         child: ListView.builder(
                           controller: _scrollController,
                           scrollDirection: Axis.horizontal,
@@ -169,17 +172,17 @@ class _CalendarPageState extends State<CalendarPage> {
                                 onTap: () => _selectDate(date),
                                 child: Container(
                                   width: 60,
-                                  margin: EdgeInsets.only(right: 5),
+                                  margin: const EdgeInsets.only(right: 5),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.deepPurple,
                                       width: isSelectedToday ? 2 : 1,
                                     ),
-                                    color:isSelectedToday
-                                                ? Colors.deepPurple.shade100
-                                                : isSelected
-                                                    ? Colors.deepPurple
-                                                    : null,
+                                    color: isSelectedToday
+                                        ? Colors.deepPurple.shade100
+                                        : isSelected
+                                            ? Colors.deepPurple
+                                            : null,
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Column(
@@ -198,7 +201,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                                     : null,
                                           ),
                                         ),
-                                        Padding(
+                                        const Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 4)),
                                         Text(
@@ -225,7 +228,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 ),
                 content: Column(
                   children: [
-                    Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     FutureBuilder(
                       future: all_tasks,
                       builder: (context, snapshot) {
@@ -236,11 +239,19 @@ class _CalendarPageState extends State<CalendarPage> {
                           Map<String, List<Task>> tasksByHour = {};
                           // group the tasks by hour
                           for (int i = 0; i < todos!.length; i++) {
+                            print(todos[i].date);
+                            DateTime format =
+                                DateFormat('dd/MM/yyyy').parse(todos[i].date);
+                            print(format);
+                            // DateTime date = DateTime.parse(todos[i].date);
+                            // print(date);
                             DateTime taskDate =
                                 DateFormat("MM/dd/yyyy").parse(todos[i].date);
                             if (DateFormat('MM/dd/yyyy').format(taskDate) !=
-                                DateFormat('MM/dd/yyyy').format(_selectedDate))
+                                DateFormat('MM/dd/yyyy')
+                                    .format(_selectedDate)) {
                               continue;
+                            }
                             String hour = DateFormat('hh a').format(
                                 DateFormat("hh:mm a")
                                     .parse(todos[i].start_time));
@@ -252,10 +263,10 @@ class _CalendarPageState extends State<CalendarPage> {
                           }
                           return Container(
                               width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.fromLTRB(18, 18, 15, 0),
+                              margin: const EdgeInsets.fromLTRB(18, 18, 15, 0),
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: 24,
                                 itemBuilder:
                                     (BuildContext context, int hourIndex) {
@@ -275,11 +286,11 @@ class _CalendarPageState extends State<CalendarPage> {
                                         color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Color(0xFF04060F)
+                                            color: const Color(0xFF04060F)
                                                 .withOpacity(0.05),
                                             spreadRadius: 3,
                                             blurRadius: 10,
-                                            offset: Offset(0, 3),
+                                            offset: const Offset(0, 3),
                                           ),
                                         ],
                                       ),
@@ -293,7 +304,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Text(currentHour,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold)),
                                             ),
@@ -309,11 +320,12 @@ class _CalendarPageState extends State<CalendarPage> {
                                                   );
                                                 },
                                                 child: Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 0, 10, 5),
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 0, 10, 5),
                                                   child: Card(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 0, 0, 10),
+                                                    margin: const EdgeInsets
+                                                        .fromLTRB(0, 0, 0, 10),
                                                     elevation: 0,
                                                     color: Color(task.color),
                                                     shape:
@@ -326,7 +338,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                                       autofocus: false,
                                                       title: Text(
                                                         task.title,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w900,
                                                           fontSize: 16,
@@ -335,7 +347,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                                       ),
                                                       subtitle: Text(
                                                         task.start_time,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 11,
                                                             color:
                                                                 Colors.white),
@@ -347,7 +359,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                         ],
                                       ),
                                     ),
-                                    Padding(
+                                    const Padding(
                                         padding:
                                             EdgeInsets.symmetric(vertical: 10)),
                                   ]);
@@ -355,7 +367,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 },
                               ));
                         } else {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(),
                           );
                         }

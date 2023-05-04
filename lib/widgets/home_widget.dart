@@ -4,6 +4,8 @@ import 'package:achievers_app/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../repositories/task_repository.dart';
+
 class Todo {
   String title;
   var color;
@@ -13,6 +15,8 @@ class Todo {
 }
 
 class HomeScreenWidget extends StatefulWidget {
+  const HomeScreenWidget({super.key});
+
   @override
   State<HomeScreenWidget> createState() => _HomeScreenWidget();
 }
@@ -23,7 +27,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    all_tasks = Db.allTasks() as Future<List<Task>>;
+    all_tasks = Db.allTasks();
   }
 
   // List<Todo> todos = [
@@ -39,7 +43,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(60),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
@@ -47,10 +51,10 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
           title: Row(
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Image.asset('assets/profile/logo.png'),
               ),
-              Text(
+              const Text(
                 'Achievers',
                 style: TextStyle(
                     color: Colors.black,
@@ -63,11 +67,11 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.fromLTRB(18, 18, 15, 0),
+          margin: const EdgeInsets.fromLTRB(18, 18, 15, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Welcome, Gabin 😊',
                 style: TextStyle(
                     fontSize: 25,
@@ -75,7 +79,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                     color: Colors.black),
               ),
               Container(
-                  margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                  margin: const EdgeInsets.fromLTRB(0, 30, 0, 30),
                   width: MediaQuery.of(context).size.width,
                   height: 140,
                   decoration: BoxDecoration(
@@ -83,23 +87,23 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                       borderRadius: BorderRadius.circular(10.0),
                       boxShadow: [
                         BoxShadow(
-                          color: Color(0xFF04060F).withOpacity(0.05),
+                          color: const Color(0xFF04060F).withOpacity(0.05),
                           spreadRadius: 3,
                           blurRadius: 10,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ]),
                   child: Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: CircularPercentIndicator(
                           radius: 50.0,
                           percent: 0.8,
                           circularStrokeCap: CircularStrokeCap.round,
                           lineWidth: 15.0,
-                          progressColor: Color(0xFF5F06EE),
-                          center: Text(
+                          progressColor: const Color(0xFF5F06EE),
+                          center: const Text(
                             '80%',
                             style: TextStyle(
                               fontWeight: FontWeight.w900,
@@ -110,12 +114,12 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           // width: 210,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text("Almost there! Keep pushing 💪",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w900,
@@ -134,11 +138,11 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                     ],
                   )),
               Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Today’s tasks (10)',
                         style: TextStyle(
                             fontSize: 16,
@@ -150,9 +154,10 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TodayTasksScreen()));
+                                    builder: (context) =>
+                                        const TodayTasksScreen()));
                           },
-                          child: Text('See All Tasks',
+                          child: const Text('See All Tasks',
                               style: TextStyle(
                                   fontSize: 12, color: Color(0xFF5F06EE))))
                     ],
@@ -162,13 +167,12 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var todos = snapshot.data;
-                    print(todos);
-                    return Container(
+                    return SizedBox(
                         width: MediaQuery.of(context).size.width,
                         // margin: EdgeInsets.fromLTRB(18, 18, 15, 0),
                         child: ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: todos?.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Column(
@@ -187,16 +191,16 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                           decoration: BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Color(0xFF04060F)
+                                                color: const Color(0xFF04060F)
                                                     .withOpacity(0.05),
                                                 spreadRadius: 3,
                                                 blurRadius: 10,
-                                                offset: Offset(0, 3),
+                                                offset: const Offset(0, 3),
                                               ),
                                             ],
                                           ),
                                           child: Card(
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 0, 10),
                                               elevation: 0,
                                               color: Colors.white,
@@ -226,7 +230,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                                   ),
                                                   title: Text(
                                                     todos![index].title,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w900,
                                                         fontSize: 16,
@@ -234,9 +238,10 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                                   ),
                                                   subtitle: Text(
                                                     todos[index].description,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 11,
-                                                        color: Color(0xFF7C7575)),
+                                                        color:
+                                                            Color(0xFF7C7575)),
                                                   ),
                                                   trailing: Container(
                                                     width: 40,
@@ -245,7 +250,8 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               100),
-                                                      gradient: LinearGradient(
+                                                      gradient:
+                                                          const LinearGradient(
                                                         colors: [
                                                           Color(0xFF39E180),
                                                           Color(0xFF1AB65C),
@@ -257,7 +263,7 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                                       ),
                                                       // color:Color(0xFF1AB65C),
                                                     ),
-                                                    child: Center(
+                                                    child: const Center(
                                                         child: Icon(
                                                       Icons.play_arrow,
                                                       color: Colors.white,
@@ -269,13 +275,12 @@ class _HomeScreenWidget extends State<HomeScreenWidget> {
                                   ]);
                             }));
                   } else {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                 },
               )
-
             ],
           ),
         ),

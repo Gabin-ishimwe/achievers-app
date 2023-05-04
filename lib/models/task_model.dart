@@ -10,8 +10,12 @@ class Task {
   final int working_sessions;
   final int short_break;
   final int long_break;
+  final int long_break_starts;
+  final bool completed;
+  final int completed_sessions;
   var color;
   var icon;
+  var status;
 
   Task(
       {this.id,
@@ -23,6 +27,10 @@ class Task {
       required this.working_sessions,
       required this.short_break,
       required this.long_break,
+      required this.long_break_starts,
+      required this.completed,
+      required this.completed_sessions,
+      this.status,
       this.color,
       this.icon});
 
@@ -35,7 +43,10 @@ class Task {
       "category": category,
       "working_sessions": working_sessions,
       "short_break": short_break,
-      "long_break": long_break
+      "long_break": long_break,
+      "long_break_start": long_break_starts,
+      "completed": completed,
+      "completed_sessions": completed_sessions
     };
   }
 
@@ -50,6 +61,9 @@ class Task {
         category: data["category"],
         working_sessions: data["working_sessions"],
         short_break: data["short_break"],
-        long_break: data["long_break"]);
+        long_break: data["long_break"],
+        long_break_starts: data["long_break_starts"],
+        completed: data["completed"],
+        completed_sessions: data["completed_sessions"]);
   }
 }

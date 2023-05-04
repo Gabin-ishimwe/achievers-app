@@ -37,7 +37,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
     return SingleChildScrollView(
       child: Container(
           // adds margin to create space between the screen edges and the content
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -46,29 +46,29 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: InkWell(
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
                       onTap: () {
                         Navigator.pop(context);
                       },
                       splashColor: Colors.transparent,
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   // add the title on the page
-                  Text(
+                  const Text(
                     "Create New Task",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
                   ),
                 ],
               ),
               // adds space between the title and the following text field
-              Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
               // a text field that receives user input for the title of the task
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +80,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         color: Colors.black.withOpacity(.85),
                         fontWeight: FontWeight.w600),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   TextFormField(
                     controller: title_controller,
                     decoration: InputDecoration(
@@ -90,7 +90,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
-                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.grey.withOpacity(0)),
@@ -100,8 +100,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                             BorderSide(color: Colors.grey.withOpacity(0)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0x4C05BE).withOpacity(1)),
+                        borderSide: BorderSide(
+                            color: const Color(0x004c05be).withOpacity(1)),
                       ),
                       filled: true,
                       fillColor: Colors.grey.withOpacity(0.1),
@@ -110,7 +110,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         color: Colors.black.withOpacity(.85),
                         fontWeight: FontWeight.w600),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   TextFormField(
                     controller: description_controller,
                     decoration: InputDecoration(
@@ -132,7 +132,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
-                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.grey.withOpacity(0)),
@@ -142,8 +142,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                             BorderSide(color: Colors.grey.withOpacity(0)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0x4C05BE).withOpacity(1)),
+                        borderSide: BorderSide(
+                            color: const Color(0x004c05be).withOpacity(1)),
                       ),
                       filled: true,
                       fillColor: Colors.grey.withOpacity(0.1),
@@ -152,7 +152,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
 
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
@@ -162,27 +162,27 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       color: Colors.black.withOpacity(.85),
                       fontWeight: FontWeight.w600),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
                   controller: date_controller,
                   decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.calendar_month),
-                      suffixIconColor: Color(0xFFC1C1C1),
-                      fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
+                      suffixIcon: const Icon(Icons.calendar_month),
+                      suffixIconColor: const Color(0xFFC1C1C1),
+                      fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
                       filled: true,
-                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
                       hintText: "Date",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Color(0xFFC1C1C1),
                       )),
                 ),
                 // adds a space after before the following column
               ]),
 
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
 
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
@@ -192,27 +192,27 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       color: Colors.black.withOpacity(.85),
                       fontWeight: FontWeight.w600),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
                   controller: start_time_controller,
                   decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.access_time),
-                      suffixIconColor: Color(0xFFC1C1C1),
-                      fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
+                      suffixIcon: const Icon(Icons.access_time),
+                      suffixIconColor: const Color(0xFFC1C1C1),
+                      fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
                       filled: true,
-                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
                       hintText: "Start time",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Color(0xFFC1C1C1),
                       )),
                 ),
                 // adds a space after before the following column
               ]),
 
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
                   "Select Category",
@@ -221,7 +221,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       color: Colors.black.withOpacity(.85),
                       fontWeight: FontWeight.w600),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 SelectFormField(
                   type: SelectFormFieldType.dropdown,
                   items: _items,
@@ -235,8 +235,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       fontSize: 14.0,
                       color: Colors.grey[600],
                     ),
-                    contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    suffixIcon: const Icon(Icons.arrow_drop_down),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
                     ),
@@ -244,8 +244,8 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0x4C05BE).withOpacity(1)),
+                      borderSide: BorderSide(
+                          color: const Color(0x004c05be).withOpacity(1)),
                     ),
                     filled: true,
                     fillColor: Colors.grey.withOpacity(0.1),
@@ -254,7 +254,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 // adds a space after before the following column
               ]),
 
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a column that holds the task priority slider
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,9 +277,10 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       inactiveTrackColor: Colors.grey[300],
                       valueIndicatorColor: Colors.deepPurple,
                       showValueIndicator: ShowValueIndicator.always,
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 10),
                       valueIndicatorTextStyle:
-                          TextStyle(fontSize: 12, color: Colors.white),
+                          const TextStyle(fontSize: 12, color: Colors.white),
                       trackHeight: 5,
                     ),
                     child: Slider(
@@ -299,7 +300,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ],
               ),
 
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a column that holds the task priority slider
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,9 +323,10 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       inactiveTrackColor: Colors.grey[300],
                       valueIndicatorColor: Colors.deepPurple,
                       showValueIndicator: ShowValueIndicator.always,
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 10),
                       valueIndicatorTextStyle:
-                          TextStyle(fontSize: 12, color: Colors.white),
+                          const TextStyle(fontSize: 12, color: Colors.white),
                       trackHeight: 5,
                     ),
                     child: Slider(
@@ -344,7 +346,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ],
               ),
 
-              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a column that holds the task priority slider
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,9 +369,10 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       inactiveTrackColor: Colors.grey[300],
                       valueIndicatorColor: Colors.deepPurple,
                       showValueIndicator: ShowValueIndicator.always,
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 10),
                       valueIndicatorTextStyle:
-                          TextStyle(fontSize: 12, color: Colors.white),
+                          const TextStyle(fontSize: 12, color: Colors.white),
                       trackHeight: 5,
                     ),
                     child: Slider(
@@ -389,11 +392,11 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ],
               ),
               // adds space before the button
-              Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
               // a button that is elevated i.e. has a shadow
               ElevatedButton(
                 onPressed: () {
-                  var new_task = Task(
+                  var newTask = Task(
                       title: title_controller.text,
                       description: description_controller.text,
                       date: date_controller.text,
@@ -402,9 +405,12 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       working_sessions:
                           int.parse(working_sessions_controller.text),
                       short_break: int.parse(short_break_controller.text),
-                      long_break: int.parse(long_break_controller.text));
+                      long_break: int.parse(long_break_controller.text),
+                      long_break_starts: 0,
+                      completed: false,
+                      completed_sessions: 0);
 
-                  createTask(new_task);
+                  createTask(newTask);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(15),
