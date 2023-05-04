@@ -1,5 +1,5 @@
 # Achievers App
-Time Management App 
+### Time Management App 
 
 <p float="left">
   <img src="./assets/readme/splash_screen.jpeg" width="100" />
