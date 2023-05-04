@@ -31,22 +31,6 @@ A task management mobile app that utilizes the pomodoro time management techniqu
  - Plugins:
     - [Firebase](https://firebase.google.com/) (Firestore database and Firestore storage)
 
-## Important files
-- [Figma link](https://www.figma.com/file/UQl8G6hyN4KVRGxyGkFBED/MDV_mini-project?t=VsuDxdWgrA2uOpoV-0)
-- [Project proposal](https://docs.google.com/document/d/1nksDKw0bZ9pXJs-bkGg7JWUIyg8igsvuwcM5_gl5LlQ/edit)
-
-## Resources used 
-#### For mini project 3 submission
-- [Setting up Firebase in our project](https://www.youtube.com/watch?v=fxDusoMcWj8&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=4)
-
-- Firebase authentication: 
-
-    - [Resource 1](https://www.youtube.com/watch?v=Dyu-tcX0H7M&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=3)
-
-    - [Resource 2](https://www.youtube.com/watch?v=4vKiJZNPhss&t=290s)
-
-- [Animation](https://www.youtube.com/watch?v=uWiQoQSa8qA&t=11s)
-
 ## How to install the project 
 Step 1: To run the program on your computer, you need to have installed git in order to clone our repository. 
 [How to install Git](https://www.youtube.com/watch?v=F02LEVYEmQw).
@@ -74,6 +58,22 @@ To use our project you simply have to run it and follow instructions by the prog
     - View you time management insights 
     - Edit profile when needed
 - Logout
+
+## Important files
+- [Figma link](https://www.figma.com/file/UQl8G6hyN4KVRGxyGkFBED/MDV_mini-project?t=VsuDxdWgrA2uOpoV-0)
+- [Project proposal](https://docs.google.com/document/d/1nksDKw0bZ9pXJs-bkGg7JWUIyg8igsvuwcM5_gl5LlQ/edit)
+
+## Resources used 
+#### For mini project 3 submission
+- [Setting up Firebase in our project](https://www.youtube.com/watch?v=fxDusoMcWj8&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=4)
+
+- Firebase authentication: 
+
+    - [Resource 1](https://www.youtube.com/watch?v=Dyu-tcX0H7M&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=3)
+
+    - [Resource 2](https://www.youtube.com/watch?v=4vKiJZNPhss&t=290s)
+
+- [Animation](https://www.youtube.com/watch?v=uWiQoQSa8qA&t=11s)
 
 ## Authors
 
