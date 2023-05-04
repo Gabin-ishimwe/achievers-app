@@ -1,8 +1,9 @@
 import 'package:achievers_app/models/task_model.dart';
-import 'package:achievers_app/screens/timer.dart';
+import 'package:achievers_app/screens/session_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 
 import '../repositories/task_repository.dart';
 
@@ -21,6 +22,11 @@ class TodayTasksScreen extends StatefulWidget {
   State<TodayTasksScreen> createState() => _TodayTasksScreen();
 }
 
+class TaskId {
+  final String? id;
+  TaskId(this.id);
+}
+
 class _TodayTasksScreen extends State<TodayTasksScreen> {
   var all_tasks;
   var length;
@@ -33,10 +39,6 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // Db.allTasks().then((value) {
-    //   all_tasks = Db.allTasks();
-    // }).catchError((err) => print(err));
     all_tasks = Db.allTasks();
     _getTasksLength().then((value) {
       setState(() {
@@ -46,19 +48,6 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
 
     super.initState();
   }
-
-  // List<Todo> todos = [
-  //   Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-  //   Todo('Working out', 0xFFF54336, Icons.fitness_center, '45 minutes'),
-  //   Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
-  //   Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
-  //   Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
-  //   Todo('Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'),
-  //   Todo('Working out', 0xFFF54336, Icons.health_and_safety, '45 minutes'),
-  //   Todo('Meditating', 0xFF8BC255, Icons.self_improvement, '15 minutes'),
-  //   Todo('Work On Assignment', 0xFF607D8A, Icons.assignment, '120 minutes'),
-  //   Todo('Listen To Music', 0xFFFFC02D, Icons.headset, '30 minutes'),
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +94,7 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var todos = snapshot.data;
-                  
+
                   return Container(
                       margin: const EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
@@ -119,11 +108,19 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                 children: <Widget>[
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TimerScreen()));
+                                      Get.to(TimerScreen(), arguments: {
+                                        'taskId': todos[index].id
+                                      });
+
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) => TimerScreen(),
+                                      //       settings: RouteSettings(
+                                      //         arguments:
+                                      //             TaskId(todos[index].id),
+                                      //       ),
+                                      //     ));
                                     },
                                     child: Slidable(
                                       endActionPane: ActionPane(

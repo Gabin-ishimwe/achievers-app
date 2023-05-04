@@ -49,6 +49,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
+  flutter_ringtone_player: ^3.2.0
   sticky_headers: "^0.3.0"
   calendar_flutter: ^1.0.0
   mocktail: ^0.3.0

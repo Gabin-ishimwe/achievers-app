@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(LongBreakTimerController());
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Task Achievers App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -16,14 +16,16 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   var short_break = 0.0;
   var long_break = 0.0;
 
-  final title_controller = TextEditingController();
-  final description_controller = TextEditingController();
-  final date_controller = TextEditingController();
-  final start_time_controller = TextEditingController();
-  final category_controller = TextEditingController();
-  final working_sessions_controller = TextEditingController();
-  final short_break_controller = TextEditingController();
-  final long_break_controller = TextEditingController();
+  var title_controller = TextEditingController();
+  var description_controller = TextEditingController();
+  var date_controller = TextEditingController();
+  var start_time_controller = TextEditingController();
+  var category_controller = TextEditingController();
+  var working_session_duration_controller = TextEditingController(text: '25');
+  var working_sessions_controller = TextEditingController();
+  var short_break_controller = TextEditingController(text: '5');
+  var long_break_controller = TextEditingController(text: '15');
+  var long_break_starts_controller;
 
   final List<Map<String, dynamic>> _items = [
     {'value': 'code', 'label': 'Code'},
@@ -32,9 +34,17 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
     {'value': 'school', 'label': 'School'},
     {'value': 'entertainment', 'label': 'Entertainment'},
   ];
+
+  final _longBreakOptions = ['0'];
+  List<Map<String, dynamic>>? dropdownItems = [];
+  List options = [];
+  final _selectedLongBreakStarts = 0;
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return SafeArea(
+        child: Scaffold(
+            body: SingleChildScrollView(
       child: Container(
           // adds margin to create space between the screen edges and the content
           margin: const EdgeInsets.all(20),
@@ -227,8 +237,6 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   items: _items,
                   enableSearch: true,
                   controller: category_controller,
-                  onChanged: (val) => print(val),
-                  onSaved: (val) => print(val),
                   decoration: InputDecoration(
                     hintText: 'Category',
                     hintStyle: TextStyle(
@@ -255,6 +263,49 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               ]),
 
               const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "How many minutes should your work session be?",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(.85),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  TextFormField(
+                    controller: working_session_duration_controller,
+                    decoration: InputDecoration(
+                      // labelText: 'Name',
+                      hintText: '25',
+                      hintStyle: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey[600],
+                      ),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color(0x004c05be).withOpacity(1)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(0.1),
+                      hoverColor: Colors.grey.withOpacity(0),
+                    ),
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+
               // a column that holds the task priority slider
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +319,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                         color: Colors.black.withOpacity(.85),
                         fontWeight: FontWeight.w600),
                   ),
-                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   // a slider that will be used to specify the task priority
                   SliderTheme(
                     data: SliderThemeData(
@@ -288,129 +339,189 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       onChanged: ((value) {
                         setState(() {
                           sessions = value;
-                          working_sessions_controller.text = value.toString();
+                          options =
+                              List.generate(value.toInt(), (index) => index);
+                          // options = options.map((i) => i.toString()).toList();
+                          dropdownItems = options
+                              .map((number) => (({
+                                    "value": number,
+                                    "label":
+                                        number == 0 ? 'No long break' : number
+                                  })))
+                              .toList();
                         });
                       }),
                       min: 0,
                       max: 8,
-                      divisions: 4,
+                      divisions: 8,
                       label: "$sessions",
                     ),
                   )
                 ],
               ),
-
               const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-              // a column that holds the task priority slider
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // a label for the slider
                   Text(
-                    "Short Break",
+                    "How many minutes should your short break be?",
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black.withOpacity(.85),
                         fontWeight: FontWeight.w600),
                   ),
-                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                  // a slider that will be used to specify the task priority
-                  SliderTheme(
-                    data: SliderThemeData(
-                      thumbColor: Colors.deepPurple,
-                      activeTrackColor: Colors.deepPurple,
-                      inactiveTrackColor: Colors.grey[300],
-                      valueIndicatorColor: Colors.deepPurple,
-                      showValueIndicator: ShowValueIndicator.always,
-                      thumbShape:
-                          const RoundSliderThumbShape(enabledThumbRadius: 10),
-                      valueIndicatorTextStyle:
-                          const TextStyle(fontSize: 12, color: Colors.white),
-                      trackHeight: 5,
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  TextFormField(
+                    controller: short_break_controller,
+                    decoration: InputDecoration(
+                      // labelText: 'Name',
+                      hintText: '5',
+                      hintStyle: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey[600],
+                      ),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color(0x004c05be).withOpacity(1)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(0.1),
+                      hoverColor: Colors.grey.withOpacity(0),
                     ),
-                    child: Slider(
-                      value: short_break,
-                      onChanged: ((value) {
-                        setState(() {
-                          short_break = value;
-                          short_break_controller.text = value.toString();
-                        });
-                      }),
-                      min: 0,
-                      max: 10,
-                      divisions: 2,
-                      label: "$short_break",
-                    ),
-                  )
+                  ),
                 ],
               ),
-
               const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-              // a column that holds the task priority slider
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // a label for the slider
                   Text(
-                    "Long Break",
+                    "How many minutes should your long break be?",
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black.withOpacity(.85),
                         fontWeight: FontWeight.w600),
                   ),
-                  // Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                  // a slider that will be used to specify the task priority
-                  SliderTheme(
-                    data: SliderThemeData(
-                      thumbColor: Colors.deepPurple,
-                      activeTrackColor: Colors.deepPurple,
-                      inactiveTrackColor: Colors.grey[300],
-                      valueIndicatorColor: Colors.deepPurple,
-                      showValueIndicator: ShowValueIndicator.always,
-                      thumbShape:
-                          const RoundSliderThumbShape(enabledThumbRadius: 10),
-                      valueIndicatorTextStyle:
-                          const TextStyle(fontSize: 12, color: Colors.white),
-                      trackHeight: 5,
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  TextFormField(
+                    controller: long_break_controller,
+                    decoration: InputDecoration(
+                      // labelText: 'Name',
+                      hintText: '15',
+                      hintStyle: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey[600],
+                      ),
+                      contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.grey.withOpacity(0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color(0x004c05be).withOpacity(1)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(0.1),
+                      hoverColor: Colors.grey.withOpacity(0),
                     ),
-                    child: Slider(
-                      value: long_break,
-                      onChanged: ((value) {
-                        setState(() {
-                          long_break = value;
-                          long_break_controller.text = value.toString();
-                        });
-                      }),
-                      min: 0,
-                      max: 15,
-                      divisions: 3,
-                      label: "$long_break",
-                    ),
-                  )
+                  ),
                 ],
               ),
-              // adds space before the button
-              const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  "After how many sessions should your long break begin",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black.withOpacity(.85),
+                      fontWeight: FontWeight.w600),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  items: dropdownItems,
+                  // value:_selectedLongBreakStarts,
+                  controller: long_break_starts_controller,
+                  enableSearch: true,
+                  onChanged: (val) => print(val),
+                  onSaved: (val) => print(val),
+                  decoration: InputDecoration(
+                    hintText: 'Select number of sessions',
+                    hintStyle: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey[600],
+                    ),
+                    contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    suffixIcon: const Icon(Icons.arrow_drop_down),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.withOpacity(0)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: const Color(0x004c05be).withOpacity(1)),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.withOpacity(0.1),
+                  ),
+                )
+                // adds a space after before the following column
+              ]),
+
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               // a button that is elevated i.e. has a shadow
               ElevatedButton(
                 onPressed: () {
-                  var newTask = Task(
-                      title: title_controller.text,
-                      description: description_controller.text,
-                      date: date_controller.text,
-                      start_time: start_time_controller.text,
-                      category: category_controller.text,
-                      working_sessions:
-                          int.parse(working_sessions_controller.text),
-                      short_break: int.parse(short_break_controller.text),
-                      long_break: int.parse(long_break_controller.text),
-                      long_break_starts: 0,
-                      completed: false,
-                      completed_sessions: 0);
+                  String? selectedValue = long_break_starts_controller?.text;
+                  int longBreak = -1;
+                  if (selectedValue != null) {
+                    longBreak = int.parse(selectedValue);
+                  }
+                  if (title_controller.text != null ||
+                      description_controller.text != null ||
+                      date_controller.text != null ||
+                      start_time_controller.text != null ||
+                      category_controller.text != null ||
+                      sessions != null ||
+                      working_session_duration_controller.text != null ||
+                      short_break_controller.text != null ||
+                      long_break_controller.text != null ||
+                      longBreak != -1) {
+                    var newTask = Task(
+                        title: title_controller.text,
+                        description: description_controller.text,
+                        date: date_controller.text,
+                        start_time: start_time_controller.text,
+                        category: category_controller.text,
+                        working_sessions: sessions.toInt(),
+                        working_session_duration:
+                            int.parse(working_session_duration_controller.text),
+                        short_break: int.parse(short_break_controller.text),
+                        long_break: int.parse(long_break_controller.text),
+                        long_break_starts: longBreak,
+                        completed_sessions: 0,
+                        completed: false);
 
-                  createTask(newTask);
+                    createTask(newTask);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(15),
@@ -426,14 +537,14 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               )
             ],
           )),
-    );
+    )));
   }
 
   Future createTask(task) async {
     final docTask = await FirebaseFirestore.instance
-        .collection("tasks")
+        .collection("userTasks")
         .add(task.toJson())
         .whenComplete(() => print("task created"))
-        .catchError((err) => {print(err)});
+        .catchError((err) => {throw err});
   }
 }
