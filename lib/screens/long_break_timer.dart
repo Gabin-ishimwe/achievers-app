@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:achievers_app/screens/session_timer.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
 import '../controllers/taskController.dart';
 import '../models/task_model.dart';
 
@@ -20,11 +22,6 @@ class LongBreakTimerController extends GetxController {
   var icon = Icons.play_arrow.obs;
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
     if (_timer != null) {
       _timer!.cancel();
@@ -34,7 +31,7 @@ class LongBreakTimerController extends GetxController {
 
   _setProperties(remainingSeconds, time) {
     this.remainingSeconds = remainingSeconds;
-    this.periodTime = remainingSeconds;
+    periodTime = remainingSeconds;
     this.time.value = "$time:00";
   }
 
@@ -58,14 +55,13 @@ class LongBreakTimerController extends GetxController {
           periodTime = remainingSeconds;
           time.value = "${task.long_break}:00";
           await player.dispose();
-          Get.to(TimerScreen(), arguments: {'taskId': taskId});
+          Get.to(const TimerScreen(), arguments: {'taskId': taskId});
         });
       } else {
         int minutes = remainingSeconds ~/ 60;
         int seconds = (remainingSeconds % 60);
-        time.value = minutes.toString().padLeft(2, "0") +
-            ":" +
-            seconds.toString().padLeft(2, "0");
+        time.value =
+            "${minutes.toString().padLeft(2, "0")}:${seconds.toString().padLeft(2, "0")}";
         percentage.value = (remainingSeconds / periodTime).toString();
         remainingSeconds--;
       }
@@ -74,6 +70,8 @@ class LongBreakTimerController extends GetxController {
 }
 
 class LongBreakTimerScreen extends StatefulWidget {
+  const LongBreakTimerScreen({super.key});
+
   @override
   State<LongBreakTimerScreen> createState() => _LongBreakTimerScreen();
 }
@@ -107,7 +105,7 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(60),
+              preferredSize: const Size.fromHeight(60),
               child: AppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -116,20 +114,20 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                 title: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                       child: InkWell(
                         onTap: () async {
                           await update_task();
                           Navigator.pop(context);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back,
                           color: Colors.black,
                         ),
                       ),
                     ),
                     // child: Icon(Icons.arrow_back, color: Colors.black,),
-                    Text(
+                    const Text(
                       'Long Break Timer',
                       style: TextStyle(
                           color: Colors.black,
@@ -145,33 +143,34 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
               future: task,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var task_data = snapshot.data!;
-                  if (task_data.completed_sessions ==
-                          task_data.long_break_starts ||
+                  var taskData = snapshot.data!;
+                  if (taskData.completed_sessions ==
+                          taskData.long_break_starts ||
                       timeController.remainingSeconds == 0) {
                     timeController._setProperties(
-                      (task_data.long_break * 60),
-                      task_data.long_break,
+                      (taskData.long_break * 60),
+                      taskData.long_break,
                     );
                   }
                   return Container(
                       height: 580, // Set a fixed height
-                      margin: EdgeInsets.fromLTRB(18, 10, 15, 0),
+                      margin: const EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
                       child: Column(children: [
                         Container(
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFF04060F).withOpacity(0.05),
+                                color:
+                                    const Color(0xFF04060F).withOpacity(0.05),
                                 spreadRadius: 3,
                                 blurRadius: 10,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
                           child: Card(
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               elevation: 0,
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
@@ -186,30 +185,31 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       // 'Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'
                                       color: Color(int.parse(
-                                          '0x${task_data.color.toRadixString(16)}')),
+                                          '0x${taskData.color.toRadixString(16)}')),
                                     ),
                                     child: Center(
                                       child: Icon(
-                                        task_data.icon,
+                                        taskData.icon,
                                         color: Colors.white,
                                         size: 25,
                                       ),
                                     ),
                                   ),
                                   title: Text(
-                                    task_data.title,
-                                    style: TextStyle(
+                                    taskData.title,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         fontSize: 16,
                                         color: Colors.black),
                                   ),
                                   subtitle: Text(
-                                    "${task_data.working_session_duration * task_data.working_sessions} minutes",
-                                    style: TextStyle(
+                                    "${taskData.working_session_duration * taskData.working_sessions} minutes",
+                                    style: const TextStyle(
                                         fontSize: 11, color: Color(0xFF7C7575)),
                                   ),
                                   trailing: Container(
-                                    margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                     //     decoration: BoxDecoration(
                                     //       border: Border.all(width: 1, color: Colors.red),
                                     //     ),
@@ -220,15 +220,15 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "${task_data.completed_sessions}/${task_data.working_sessions}",
-                                          style: TextStyle(
+                                          "${taskData.completed_sessions}/${taskData.working_sessions}",
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 16,
                                               color: Colors.black),
                                         ),
                                         Text(
-                                          "${task_data.working_session_duration} minutes",
-                                          style: TextStyle(
+                                          "${taskData.working_session_duration} minutes",
+                                          style: const TextStyle(
                                               fontSize: 11,
                                               color: Color(0xFF7C7575)),
                                         ),
@@ -239,27 +239,27 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                         Expanded(
                           child: Column(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 40, 0, 40),
+                              margin: const EdgeInsets.fromLTRB(0, 40, 0, 40),
                               child: Obx(() => CircularPercentIndicator(
                                     radius: 140.0,
                                     percent: double.parse(
                                         timeController.percentage.value),
                                     circularStrokeCap: CircularStrokeCap.round,
                                     lineWidth: 25.0,
-                                    progressColor: Color(0xFF21c064),
-                                    backgroundColor: Color(0xFFdef6e8),
+                                    progressColor: const Color(0xFF21c064),
+                                    backgroundColor: const Color(0xFFdef6e8),
                                     center: Container(
                                         child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Obx(() =>
-                                            Text('${timeController.time.value}',
-                                                style: TextStyle(
+                                            Text(timeController.time.value,
+                                                style: const TextStyle(
                                                   fontSize: 40,
                                                   fontWeight: FontWeight.w900,
                                                 ))),
-                                        Padding(
+                                        const Padding(
                                           padding:
                                               EdgeInsets.fromLTRB(0, 17, 0, 0),
                                           child: Text(
@@ -274,16 +274,16 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                   )),
                             ),
                             Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                                 child: Center(
                                   child: Text(
-                                    "Take a break for ${task_data.long_break} minutes",
-                                    style: TextStyle(
+                                    "Take a break for ${taskData.long_break} minutes",
+                                    style: const TextStyle(
                                         fontSize: 14, color: Color(0xFF7C7575)),
                                   ),
                                 )),
                             Container(
-                              child: Container(
+                              child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 child: Row(
                                     mainAxisAlignment:
@@ -295,20 +295,20 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            color: Color(0xFFf0f0f0)),
+                                            color: const Color(0xFFf0f0f0)),
                                         child: Center(
                                             child: IconButton(
                                                 icon: const Icon(Icons.refresh),
-                                                color: Color(0xFFcccccc),
+                                                color: const Color(0xFFcccccc),
                                                 onPressed: () {
                                                   timeController._timer!
                                                       .cancel();
                                                   timeController
                                                           .remainingSeconds =
-                                                      task_data.long_break * 60;
+                                                      taskData.long_break * 60;
                                                   // controller._startTimer();
                                                   timeController.time.value =
-                                                      "${task_data.long_break}:00";
+                                                      "${taskData.long_break}:00";
                                                   timeController.running =
                                                       false;
                                                   timeController
@@ -328,7 +328,7 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            gradient: LinearGradient(
+                                            gradient: const LinearGradient(
                                               colors: [
                                                 Color(0xFF5F06EE),
                                                 Color.fromRGBO(
@@ -339,7 +339,7 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                             )),
                                         child: Center(
                                             child: Obx(() => IconButton(
-                                                icon: new Icon(
+                                                icon: Icon(
                                                     timeController.icon.value),
                                                 color: Colors.white,
                                                 onPressed: () {
@@ -364,16 +364,16 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            color: Color(0xFFf0f0f0)),
+                                            color: const Color(0xFFf0f0f0)),
                                         child: Center(
                                             child: IconButton(
-                                                icon:
-                                                    new Icon(Icons.arrow_right),
-                                                color: Color(0xFFcccccc),
+                                                icon: const Icon(
+                                                    Icons.arrow_right),
+                                                color: const Color(0xFFcccccc),
                                                 onPressed: () {
                                                   timeController
                                                           .remainingSeconds =
-                                                      task_data.long_break * 60;
+                                                      taskData.long_break * 60;
                                                   timeController
                                                       .percentage.value = '1';
                                                   timeController.icon.value =
@@ -384,8 +384,8 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                                       timeController
                                                           .remainingSeconds;
                                                   timeController.time.value =
-                                                      "${task_data.long_break}:00";
-                                                  Get.to(TimerScreen(),
+                                                      "${taskData.long_break}:00";
+                                                  Get.to(const TimerScreen(),
                                                       arguments: {
                                                         'taskId': taskId
                                                       });
@@ -400,7 +400,7 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                 }
                 // Check if future is still loading
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }

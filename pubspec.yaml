@@ -47,6 +47,8 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.53
   cloud_firestore: ^4.4.5
   flutter_slidable: ^2.0.0
+  image_picker: ^0.8.4+4
+  firebase_storage: 11.1.1
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
   flutter_ringtone_player: ^3.2.0
@@ -54,6 +56,10 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   rxdart: ^0.27.7
   audioplayers: ^4.0.1
+  sticky_headers: "^0.3.0"
+  calendar_flutter: ^1.0.0
+  mocktail: ^0.3.0
+  flutter_jailbreak_detection: ^1.10.0
 
 dev_dependencies:
   flutter_test:

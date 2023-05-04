@@ -1,8 +1,5 @@
-import "package:achievers_app/repositories/auth_repository.dart";
-import "package:achievers_app/screens/create_task.dart";
 import "package:achievers_app/screens/home_screen.dart";
 import "package:achievers_app/screens/onboarding_screen.dart";
-import "package:achievers_app/screens/splash_screen.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 
