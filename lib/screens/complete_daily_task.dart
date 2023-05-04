@@ -1,3 +1,4 @@
+import 'package:achievers_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class CompleteDailyTask extends StatefulWidget {
@@ -63,7 +64,13 @@ class _CompleteDailyTaskState extends State<CompleteDailyTask> {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ));
+            },
             child: Text(
               "Home",
               style: TextStyle(fontWeight: FontWeight.bold),

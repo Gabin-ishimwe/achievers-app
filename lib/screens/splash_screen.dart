@@ -3,7 +3,6 @@ import 'package:achievers_app/screens/complete_daily_task.dart';
 import 'package:achievers_app/screens/completion_screen.dart';
 import 'package:achievers_app/screens/home_screen.dart';
 import 'package:achievers_app/screens/onboarding_screen.dart';
-import 'package:achievers_app/widgets/edit_profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

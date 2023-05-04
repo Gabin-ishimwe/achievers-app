@@ -1,11 +1,11 @@
-import 'package:achievers_app/firebase_options.dart'; 
+import 'package:achievers_app/firebase_options.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
-import 'package:achievers_app/screens/splash_screen.dart'; 
+import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,10 +13,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
-  
+
   if (isJailbroken) {
     print("This app cannot run on a jailbroken device.");
-    runApp(MaterialApp(
+    runApp(const MaterialApp(
       home: Scaffold(
         body: Center(
           child: Text(
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(LongBreakTimerController());
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Task Achievers App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
