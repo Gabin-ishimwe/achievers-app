@@ -1,4 +1,4 @@
-# achievers_app
+# Achievers App
 
 <p float="left">
   <img src="./assets/readme/splash_screen.jpeg" width="100" />
