@@ -28,7 +28,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       UserModel user = UserModel(
           fullName: name.text,
           email: emailController.text,
-          password: passwordController.text);
+          password: passwordController.text,
+          imageUrl: "https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg"
+      );
       await AuthRepository().createrWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
       await UserRepository().createUser(user);

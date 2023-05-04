@@ -71,8 +71,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       Stack(
                         children: [
                           CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/profile/gabin.jpeg"),
+                              backgroundImage: NetworkImage(userData.imageUrl ?? 'https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg') as ImageProvider,
+                              // userData.imageUrl == null ? NetworkImage('https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg') : NetworkImage(userData.imageUrl!),
                               radius: 100.0),
                           Positioned(
                               bottom: 0,
@@ -91,6 +91,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EditProfileWidget(
+                                                      imageUrl: userData.imageUrl == null ? 'https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg' : userData.imageUrl!,
                                                         fullName:
                                                             userData.fullName!,
                                                         email: userData.email!,
