@@ -112,7 +112,7 @@ class _StatisticsWidgetState extends State<StatisticsWidget> {
                     );
                   } else {
                     return const SizedBox(
-                      height: 100,
+                      height: 200,
                       child: Center(
                         child: CircularProgressIndicator(),
                       ),
