@@ -1,12 +1,13 @@
 import 'dart:async';
+
+import 'package:achievers_app/controllers/taskController.dart';
 import 'package:achievers_app/models/task_model.dart';
 import 'package:achievers_app/screens/complete_daily_task.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:achievers_app/controllers/taskController.dart';
 import 'package:achievers_app/screens/short_break_timer.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 var taskId;
 var completed_sessionss;
@@ -21,11 +22,6 @@ class TimerController extends GetxController {
   var icon = Icons.play_arrow.obs;
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
     if (_timer != null) {
       _timer!.cancel();
@@ -37,7 +33,7 @@ class TimerController extends GetxController {
     print('in set properties: $remainingSeconds, $time');
     this.remainingSeconds = remainingSeconds;
     print('just assigned rem sec');
-    this.periodTime = remainingSeconds;
+    periodTime = remainingSeconds;
     print('just assigned period time');
     this.time.value = "$time:00";
     print('done');
@@ -79,9 +75,8 @@ class TimerController extends GetxController {
       } else {
         int minutes = remainingSeconds ~/ 60;
         int seconds = (remainingSeconds % 60);
-        time.value = minutes.toString().padLeft(2, "0") +
-            ":" +
-            seconds.toString().padLeft(2, "0");
+        time.value =
+            "${minutes.toString().padLeft(2, "0")}:${seconds.toString().padLeft(2, "0")}";
         percentage.value = (remainingSeconds / periodTime).toString();
         remainingSeconds--;
       }
@@ -90,6 +85,8 @@ class TimerController extends GetxController {
 }
 
 class TimerScreen extends StatefulWidget {
+  const TimerScreen({super.key});
+
   @override
   State<TimerScreen> createState() => _TimerScreen();
 }
@@ -136,7 +133,7 @@ class _TimerScreen extends State<TimerScreen> {
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(60),
+              preferredSize: const Size.fromHeight(60),
               child: AppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -145,20 +142,20 @@ class _TimerScreen extends State<TimerScreen> {
                 title: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                       child: InkWell(
                         onTap: () async {
                           await update_task();
                           Navigator.pop(context);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back,
                           color: Colors.black,
                         ),
                       ),
                     ),
                     // child: Icon(Icons.arrow_back, color: Colors.black,),
-                    Text(
+                    const Text(
                       'Sessions Timer',
                       style: TextStyle(
                           color: Colors.black,
@@ -174,14 +171,14 @@ class _TimerScreen extends State<TimerScreen> {
               future: task,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var task_data = snapshot.data!;
-                  print('taskdata in session timer: $task_data');
-                  print(task_data.working_session_duration);
-                  if (task_data.completed_sessions == 0 ||
+                  var taskData = snapshot.data!;
+                  print('taskdata in session timer: $taskData');
+                  print(taskData.working_session_duration);
+                  if (taskData.completed_sessions == 0 ||
                       timeController.remainingSeconds == 0) {
                     timeController._setProperties(
-                      (task_data.working_session_duration * 60),
-                      task_data.working_session_duration,
+                      (taskData.working_session_duration * 60),
+                      taskData.working_session_duration,
                     );
                   }
                   // else{
@@ -192,23 +189,26 @@ class _TimerScreen extends State<TimerScreen> {
                       'timeController in session timer in build: ${timeController.time}, ${timeController.remainingSeconds} ');
 
                   return Container(
-                      height: 580, // Set a fixed height
-                      margin: EdgeInsets.fromLTRB(18, 10, 15, 0),
+                      height: MediaQuery.of(context)
+                          .size
+                          .height, // Set a fixed height
+                      margin: const EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
                       child: Column(children: [
                         Container(
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFF04060F).withOpacity(0.05),
+                                color:
+                                    const Color(0xFF04060F).withOpacity(0.05),
                                 spreadRadius: 3,
                                 blurRadius: 10,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
                           child: Card(
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               elevation: 0,
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
@@ -223,30 +223,31 @@ class _TimerScreen extends State<TimerScreen> {
                                       borderRadius: BorderRadius.circular(15),
                                       // 'Learn Programming', 0xFF00A9F1, Icons.code, '120 minutes'
                                       color: Color(int.parse(
-                                          '0x${task_data.color.toRadixString(16)}')),
+                                          '0x${taskData.color.toRadixString(16)}')),
                                     ),
                                     child: Center(
                                       child: Icon(
-                                        task_data.icon,
+                                        taskData.icon,
                                         color: Colors.white,
                                         size: 25,
                                       ),
                                     ),
                                   ),
                                   title: Text(
-                                    task_data.title,
-                                    style: TextStyle(
+                                    taskData.title,
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         fontSize: 16,
                                         color: Colors.black),
                                   ),
                                   subtitle: Text(
-                                    "${task_data.working_session_duration * task_data.working_sessions} minutes",
-                                    style: TextStyle(
+                                    "${taskData.working_session_duration * taskData.working_sessions} minutes",
+                                    style: const TextStyle(
                                         fontSize: 11, color: Color(0xFF7C7575)),
                                   ),
                                   trailing: Container(
-                                    margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                     //     decoration: BoxDecoration(
                                     //       border: Border.all(width: 1, color: Colors.red),
                                     //     ),
@@ -257,15 +258,15 @@ class _TimerScreen extends State<TimerScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "${task_data.completed_sessions + 1}/${task_data.working_sessions}",
-                                          style: TextStyle(
+                                          "${taskData.completed_sessions + 1}/${taskData.working_sessions}",
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 16,
                                               color: Colors.black),
                                         ),
                                         Text(
-                                          "${task_data.working_session_duration} minutes",
-                                          style: TextStyle(
+                                          "${taskData.working_session_duration} minutes",
+                                          style: const TextStyle(
                                               fontSize: 11,
                                               color: Color(0xFF7C7575)),
                                         ),
@@ -276,32 +277,32 @@ class _TimerScreen extends State<TimerScreen> {
                         Expanded(
                           child: Column(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 40, 0, 40),
+                              margin: const EdgeInsets.fromLTRB(0, 40, 0, 40),
                               child: Obx(() => CircularPercentIndicator(
                                     radius: 140.0,
                                     percent: double.parse(
                                         timeController.percentage.value),
                                     circularStrokeCap: CircularStrokeCap.round,
                                     lineWidth: 25.0,
-                                    progressColor: Color(0xFF00a9f1),
-                                    backgroundColor: Color(0xFFd9f2fd),
+                                    progressColor: const Color(0xFF00a9f1),
+                                    backgroundColor: const Color(0xFFd9f2fd),
                                     center: Container(
                                         child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Obx(() =>
-                                            Text('${timeController.time.value}',
-                                                style: TextStyle(
+                                            Text(timeController.time.value,
+                                                style: const TextStyle(
                                                   fontSize: 40,
                                                   fontWeight: FontWeight.w900,
                                                 ))),
                                         Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 17, 0, 0),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 17, 0, 0),
                                           child: Text(
-                                            "${task_data.completed_sessions + 1}/${task_data.working_sessions} sessions",
-                                            style: TextStyle(
+                                            "${taskData.completed_sessions + 1}/${taskData.working_sessions} sessions",
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 color: Color(0xFF7C7575)),
                                           ),
@@ -311,16 +312,16 @@ class _TimerScreen extends State<TimerScreen> {
                                   )),
                             ),
                             Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                                 child: Center(
                                   child: Text(
-                                    "Stay focused for ${task_data.working_session_duration} minutes",
-                                    style: TextStyle(
+                                    "Stay focused for ${taskData.working_session_duration} minutes",
+                                    style: const TextStyle(
                                         fontSize: 14, color: Color(0xFF7C7575)),
                                   ),
                                 )),
                             Container(
-                              child: Container(
+                              child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 child: Row(
                                     mainAxisAlignment:
@@ -332,21 +333,21 @@ class _TimerScreen extends State<TimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            color: Color(0xFFf0f0f0)),
+                                            color: const Color(0xFFf0f0f0)),
                                         child: Center(
                                             child: IconButton(
                                                 icon: const Icon(Icons.refresh),
-                                                color: Color(0xFFcccccc),
+                                                color: const Color(0xFFcccccc),
                                                 onPressed: () {
                                                   timeController._timer!
                                                       .cancel();
                                                   timeController
-                                                      .remainingSeconds = task_data
+                                                      .remainingSeconds = taskData
                                                           .working_session_duration *
                                                       60;
                                                   // controller._startTimer();
                                                   timeController.time.value =
-                                                      "${task_data.working_session_duration}:00";
+                                                      "${taskData.working_session_duration}:00";
                                                   timeController.running =
                                                       false;
                                                   timeController
@@ -366,7 +367,7 @@ class _TimerScreen extends State<TimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            gradient: LinearGradient(
+                                            gradient: const LinearGradient(
                                               colors: [
                                                 Color(0xFF5F06EE),
                                                 Color.fromRGBO(
@@ -377,7 +378,7 @@ class _TimerScreen extends State<TimerScreen> {
                                             )),
                                         child: Center(
                                             child: Obx(() => IconButton(
-                                                icon: new Icon(
+                                                icon: Icon(
                                                     timeController.icon.value),
                                                 color: Colors.white,
                                                 onPressed: () {
@@ -407,17 +408,16 @@ class _TimerScreen extends State<TimerScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            color: Color(0xFFf0f0f0)),
+                                            color: const Color(0xFFf0f0f0)),
                                         child: Center(
                                             child: IconButton(
-                                                icon:
-                                                    new Icon(Icons.arrow_right),
-                                                color: Color(0xFFcccccc),
+                                                icon: const Icon(
+                                                    Icons.arrow_right),
+                                                color: const Color(0xFFcccccc),
                                                 onPressed: () async {
-                                                  task_data
-                                                      .completed_sessions++;
+                                                  taskData.completed_sessions++;
                                                   timeController
-                                                      .remainingSeconds = task_data
+                                                      .remainingSeconds = taskData
                                                           .working_session_duration *
                                                       60;
                                                   timeController
@@ -429,41 +429,47 @@ class _TimerScreen extends State<TimerScreen> {
                                                   timeController.periodTime =
                                                       timeController
                                                           .remainingSeconds;
-                                                  if (task_data
+                                                  if (taskData
                                                           .working_sessions ==
-                                                      task_data
+                                                      taskData
                                                           .completed_sessions) {
                                                     await TaskController
                                                         .updateTask(taskId, {
                                                       'completed_sessions':
-                                                          task_data
+                                                          taskData
                                                               .completed_sessions,
                                                       'completed': true
                                                     });
                                                     timeController.time.value =
-                                                        "${task_data.working_session_duration}:00";
+                                                        "${taskData.working_session_duration}:00";
                                                     Get.to(
-                                                        CompleteDailyTask(),
+                                                        const CompleteDailyTask(),
                                                         arguments: {
                                                           'taskId': taskId
                                                         });
                                                   } else {
                                                     await TaskController
                                                         .updateTask(taskId, {
-                                                      'completed_sessions': task_data.completed_sessions
+                                                      'completed_sessions':
+                                                          taskData
+                                                              .completed_sessions
                                                     });
-                                                    if (task_data.long_break_starts ==
-                                                        task_data.completed_sessions) {
-                                                      timeController.time.value =
-                                                          "${task_data.working_session_duration}:00";
+                                                    if (taskData
+                                                            .long_break_starts ==
+                                                        taskData
+                                                            .completed_sessions) {
+                                                      timeController
+                                                              .time.value =
+                                                          "${taskData.working_session_duration}:00";
                                                       Get.to(
                                                           LongBreakTimerScreen(),
                                                           arguments: {
                                                             'taskId': taskId
                                                           });
                                                     } else {
-                                                      timeController.time.value =
-                                                          "${task_data.working_session_duration}:00";
+                                                      timeController
+                                                              .time.value =
+                                                          "${taskData.working_session_duration}:00";
                                                       Get.to(
                                                           ShortBreakTimerScreen(),
                                                           arguments: {
@@ -483,7 +489,7 @@ class _TimerScreen extends State<TimerScreen> {
                 // Check if future is still loading
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   print('waiting');
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
