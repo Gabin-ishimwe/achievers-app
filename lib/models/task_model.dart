@@ -47,7 +47,7 @@ class Task {
       "working_sessions": working_sessions,
       "short_break": short_break,
       "long_break": long_break,
-      "long_break_start": long_break_starts,
+      "long_break_starts": long_break_starts,
       "completed": completed,
       "completed_sessions": completed_sessions
     };

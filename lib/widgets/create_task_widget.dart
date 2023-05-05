@@ -5,6 +5,9 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
 import "package:select_form_field/select_form_field.dart";
+import 'package:intl/intl.dart';
+
+import "../screens/session_timer.dart";
 
 import "../screens/session_timer.dart";
 
@@ -30,7 +33,13 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   var working_sessions_controller = TextEditingController();
   var short_break_controller = TextEditingController(text: '5');
   var long_break_controller = TextEditingController(text: '15');
-  var long_break_starts_controller;
+  var long_break_starts_controller = TextEditingController();
+
+  TextEditingController? dateController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  TextEditingController? timeController = TextEditingController();
+  String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
+
 
   final List<Map<String, dynamic>> _items = [
     {'value': 'code', 'label': 'Code'},
@@ -45,13 +54,6 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   List options = [];
   final _selectedLongBreakStarts = 0;
 
-  // NotificationService? notificationObject;
-
-  // void initState(){
-  //   super.initState();
-
-  //   notificationObject = NotificationService();
-  // }
   @override
   void initState() {
     super.initState();
@@ -203,18 +205,23 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
-                  controller: date_controller,
+                  controller: dateController,
                   decoration: InputDecoration(
-                      suffixIcon: const Icon(Icons.calendar_month),
-                      suffixIconColor: const Color(0xFFC1C1C1),
-                      fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.calendar_month),
+                        onPressed: () {
+                          _getDateFromUser();
+                        },
+                      ),
+                      suffixIconColor: Color(0xFFC1C1C1),
+                      fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
                       filled: true,
                       contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
-                      hintText: "Date",
-                      hintStyle: const TextStyle(
+                      hintText: DateFormat.yMd().format(_selectedDate),
+                      hintStyle: TextStyle(
                         color: Color(0xFFC1C1C1),
                       )),
                 ),
@@ -233,18 +240,23 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 TextFormField(
-                  controller: start_time_controller,
+                  controller: timeController,
                   decoration: InputDecoration(
-                      suffixIcon: const Icon(Icons.access_time),
-                      suffixIconColor: const Color(0xFFC1C1C1),
-                      fillColor: const Color(0xFFC1C1C1).withOpacity(0.2),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.access_time),
+                        onPressed: () {
+                          _getTimeFromUser();
+                        },
+                      ),
+                      suffixIconColor: Color(0xFFC1C1C1),
+                      fillColor: Color(0xFFC1C1C1).withOpacity(0.2),
                       filled: true,
                       contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
-                      hintText: "Start time",
-                      hintStyle: const TextStyle(
+                      hintText: _startTime,
+                      hintStyle: TextStyle(
                         color: Color(0xFFC1C1C1),
                       )),
                 ),
@@ -520,26 +532,27 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               // a button that is elevated i.e. has a shadow
               ElevatedButton(
                 onPressed: () {
-                  String? selectedValue = long_break_starts_controller?.text;
+                  String? selectedValue = long_break_starts_controller.text;
                   int longBreak = -1;
+                  print("SelectedValue $selectedValue");
                   if (selectedValue != null) {
                     longBreak = int.parse(selectedValue);
                   }
-                  if (title_controller.text != null ||
-                      description_controller.text != null ||
-                      date_controller.text != null ||
-                      start_time_controller.text != null ||
-                      category_controller.text != null ||
-                      sessions != null ||
-                      working_session_duration_controller.text != null ||
-                      short_break_controller.text != null ||
-                      long_break_controller.text != null ||
+                  if (title_controller.text != null &&
+                      description_controller.text != null &&
+                      date_controller.text != null &&
+                      start_time_controller.text != null &&
+                      category_controller.text != null &&
+                      sessions != null &&
+                      working_session_duration_controller.text != null &&
+                      short_break_controller.text != null &&
+                      long_break_controller.text != null &&
                       longBreak != -1) {
                     var newTask = Task(
                         title: title_controller.text,
                         description: description_controller.text,
-                        date: date_controller.text,
-                        start_time: start_time_controller.text,
+                        date: formatDateW(_selectedDate),
+                        start_time: _startTime,
                         category: category_controller.text,
                         working_sessions: sessions.toInt(),
                         working_session_duration:
@@ -572,28 +585,79 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
 
   Future createTask(task) async {
     final docTask = await FirebaseFirestore.instance
-        .collection("TasksTest")
+        .collection("tasks")
         .add(task.toJson())
         .whenComplete(() => print("task created"))
         .catchError((err) => {throw err});
 
-    // await notificationObject?.scheduleNotificationForTask(task);
-    // print("scheduled notification");
-    // NotificationClass.showNotification(
-    //   title: 'Task reminder',
-    //   body: 'It\'s time to start "${task.title}"',
-    //   payload: task.id,
-    // );
-    // print('task id is ${docTask} ${docTask.id}');
-    // NotificationClass.init();
-
+    var formattedT = formatTime(task.start_time);
     var time = DateFormat.jm()
-        .format(DateTime.parse('${task.date} ${task.start_time}'));
+        .format(DateTime.parse('${task.date} ${formattedT}'));
     NotificationClass.showScheduledNotification(
       title: 'Achievers app task reminder',
       body: '$time: It\'s time to start "${task.title}"',
       payload_data: docTask.id,
-      scheduledDate: DateTime.parse('${task.date} ${task.start_time}'),
+      scheduledDate: DateTime.parse('${task.date} ${formattedT}'),
     );
   }
+
+  _getDateFromUser() async {
+    DateTime? _pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023),
+        lastDate: DateTime(2121));
+
+    if (_pickerDate != null) {
+      setState(() {
+        _selectedDate = _pickerDate;
+        print(_selectedDate);
+      });
+    } else {
+      print("it's null date");
+    }
+  }
+
+  _getTimeFromUser() async {
+    var _pickedTime = await _showTimePicker();
+    String _formatedTime = _pickedTime.format(context);
+    if (_pickedTime == null) {
+      print("it's null time");
+    } else {
+      setState(() {
+        _startTime = _formatedTime;
+        print(_startTime);
+      });
+    }
+  }
+
+  _showTimePicker() {
+    return showTimePicker(
+        initialEntryMode: TimePickerEntryMode.input,
+        context: context,
+        initialTime: TimeOfDay(
+            hour: int.parse(_startTime.split(":")[0]),
+            minute: int.parse(_startTime.split(":")[1].split(" ")[0])));
+  }
+
+  String formatTime(String timeString) {
+    DateTime parsedTime = DateFormat.jm().parse(
+        timeString); // Parse the time string using Flutter's DateFormat class
+    String formattedTime = DateFormat.Hm().format(
+        parsedTime); // Format the parsed time string in 24-hour format
+
+    return formattedTime;
+  }
+
+  String formatDateW(DateTime datesel) {
+
+  // Create a formatter that will format the DateTime object to the desired output format
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  // Format the DateTime object to a string in the desired output format
+  String formattedDate = formatter.format(datesel);
+
+  // Return the formatted string
+  return formattedDate;
+}
 }
