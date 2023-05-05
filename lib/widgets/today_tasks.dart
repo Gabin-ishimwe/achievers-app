@@ -108,10 +108,30 @@ class _TodayTasksScreen extends State<TodayTasksScreen> {
                                 children: <Widget>[
                                   InkWell(
                                     onTap: () {
-                                      Get.to(const TimerScreen(), arguments: {
-                                        'taskId': todos[index].id
-                                      });
-
+                                      if(!todos[index].completed) {
+                                        Get.to(const TimerScreen(), arguments: {
+                                          'taskId': todos[index].id
+                                        });
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Task completed'),
+                                              content: Text('You have completed this task.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: Text('OK'),
+                                                  onPressed: () {
+                                                    // Perform some action when the user presses the OK button.
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                       // Navigator.push(
                                       //     context,
                                       //     MaterialPageRoute(

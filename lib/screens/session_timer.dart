@@ -32,9 +32,7 @@ class TimerController extends GetxController {
   _setProperties(remainingSeconds, time) {
     this.remainingSeconds = remainingSeconds;
     periodTime = remainingSeconds;
-    print('just assigned rem sec');
     periodTime = remainingSeconds;
-    print('just assigned period time');
     this.time.value = "$time:00";
   }
 
@@ -117,6 +115,9 @@ class _TimerScreen extends State<TimerScreen> {
     Future<Task?> task = TaskController.getSingleTask(taskId);
 
     update_task() async {
+      if (timeController.running == true) {
+        timeController._timer!.cancel();
+      }
       Task? task = await TaskController.getSingleTask(taskId);
       timeController.remainingSeconds = task!.working_session_duration * 60;
       timeController.percentage.value = '1';
@@ -170,10 +171,10 @@ class _TimerScreen extends State<TimerScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var taskData = snapshot.data!;
-                  print('taskdata in session timer: $taskData');
-                  print(taskData.working_session_duration);
-                  if (taskData.completed_sessions == 0 ||
-                      timeController.remainingSeconds == 0) {
+                  print(
+                      'remaining seconds: ${timeController.remainingSeconds}');
+                  print('time: ${timeController.time.value}');
+                  if (timeController.remainingSeconds == 0) {
                     timeController._setProperties(
                       (taskData.working_session_duration * 60),
                       taskData.working_session_duration,
@@ -393,10 +394,6 @@ class _TimerScreen extends State<TimerScreen> {
                                                         ._startTimer();
                                                     timeController.icon.value =
                                                         Icons.pause;
-
-                                                    // setState(() {
-                                                    //   icon_value = Icons.pause;
-                                                    // });
                                                   }
                                                 }))),
                                       ),
@@ -413,6 +410,9 @@ class _TimerScreen extends State<TimerScreen> {
                                                     Icons.arrow_right),
                                                 color: const Color(0xFFcccccc),
                                                 onPressed: () async {
+                                                  if (timeController.running == true){
+                                                    timeController._timer!.cancel();
+                                                  }
                                                   taskData.completed_sessions++;
                                                   timeController
                                                       .remainingSeconds = taskData
