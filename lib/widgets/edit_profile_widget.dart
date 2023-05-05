@@ -44,7 +44,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     emailController.text = widget.email;
     fullNameController.text = widget.fullName;
     preferredNameController.text = widget.fullName;
-    _imageUrl = widget.imageUrl!;
+    _imageUrl = widget.imageUrl;
 
     return SafeArea(
       child: Scaffold(
@@ -93,7 +93,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                     children: [
                       CircleAvatar(
                           backgroundImage: _imageFile == null
-                              ? NetworkImage(widget.imageUrl!) as ImageProvider
+                              ? NetworkImage(widget.imageUrl) as ImageProvider
                               : FileImage(_imageFile!),
                           radius: 100.0),
                       Positioned(
