@@ -15,20 +15,20 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
+  bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
 
-  // if (isJailbroken) {
-  //   print("This app cannot run on a jailbroken device.");
-  //   runApp(const MaterialApp(
-  //     home: Scaffold(
-  //       body: Center(
-  //         child: Text(
-  //             "This app cannot run on a Jailbroken or rooted devices have more privileges and enable easy installation of malware and viruses."),
-  //       ),
-  //     ),
-  //   ));
-  //   return;
-  // }
+  if (isJailbroken) {
+    print("This app cannot run on a jailbroken device.");
+    runApp(const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+              "This app is not compatible with jailbroken or rooted devices. Jailbreaking or rooting a device removes certain restrictions imposed by the operating system, granting users more control and access to system files. By running this app on a jailbroken or rooted device, you could be putting your device and personal information at risk. Therefore, we highly recommend using this app only on devices that have not been jailbroken or rooted."),
+        ),
+      ),
+    ));
+    return;
+  }
   runApp(const MyApp());
 }
 

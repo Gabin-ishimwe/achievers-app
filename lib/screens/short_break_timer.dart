@@ -81,6 +81,9 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
   IconData icon_value = Icons.play_arrow;
 
   update_task() async {
+    if (timeController.running == true) {
+      timeController._timer!.cancel();
+    }
     Task? task = await TaskController.getSingleTask(taskId);
     task!.completed_sessions--;
     await TaskController.updateTask(taskId, {
@@ -144,9 +147,10 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var taskData = snapshot.data!;
-                  if (taskData.completed_sessions == 1 ||
-                      taskData.long_break_starts == 1 ||
-                      timeController.remainingSeconds == 0) {
+                  print(
+                      'remaining seconds: ${timeController.remainingSeconds}');
+                  print('time: ${timeController.time.value}');
+                  if (timeController.remainingSeconds == 0) {
                     timeController._setProperties(
                       (taskData.short_break * 60),
                       taskData.short_break,
@@ -308,8 +312,8 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
                                                 icon: const Icon(Icons.refresh),
                                                 color: const Color(0xFFcccccc),
                                                 onPressed: () {
-                                                  timeController._timer!
-                                                      .cancel();
+                                                  // timeController._timer!
+                                                  //     .cancel();
                                                   timeController
                                                           .remainingSeconds =
                                                       taskData.short_break * 60;
@@ -382,6 +386,9 @@ class _ShortBreakTimerScreen extends State<ShortBreakTimerScreen> {
                                                     Icons.arrow_right),
                                                 color: const Color(0xFFcccccc),
                                                 onPressed: () {
+                                                  if (timeController.running == true){
+                                                    timeController._timer!.cancel();
+                                                  }
                                                   timeController
                                                           .remainingSeconds =
                                                       taskData.short_break * 60;

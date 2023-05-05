@@ -29,8 +29,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           fullName: name.text,
           email: emailController.text,
           password: passwordController.text,
-          imageUrl: "https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg"
-      );
+          imageUrl:
+              "https://res.cloudinary.com/dpuyeblqg/image/upload/v1683143224/profile_picture_nrdaqi.jpg");
       await AuthRepository().createrWithEmailAndPassword(
           emailController.text.trim(), passwordController.text.trim());
       await UserRepository().createUser(user);
@@ -83,6 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 40,
                   ),
                   TextFormField(
+                    key: const Key("name_key"),
                     controller: name,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
@@ -110,6 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    key: const Key("email_key"),
                     controller: emailController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
@@ -140,6 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    key: const Key("password_key"),
                     obscureText: true,
                     controller: passwordController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,

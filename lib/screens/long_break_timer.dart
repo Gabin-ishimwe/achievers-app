@@ -81,6 +81,9 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
   IconData icon_value = Icons.play_arrow;
 
   update_task() async {
+    if (timeController.running == true) {
+      timeController._timer!.cancel();
+    }
     Task? task = await TaskController.getSingleTask(taskId);
     task!.completed_sessions--;
     await TaskController.updateTask(taskId, {
@@ -144,9 +147,10 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var taskData = snapshot.data!;
-                  if (taskData.completed_sessions ==
-                          taskData.long_break_starts ||
-                      timeController.remainingSeconds == 0) {
+                  print(
+                      'remaining seconds: ${timeController.remainingSeconds}');
+                  print('time: ${timeController.time.value}');
+                  if (timeController.remainingSeconds == 0) {
                     timeController._setProperties(
                       (taskData.long_break * 60),
                       taskData.long_break,
@@ -371,6 +375,11 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                                                     Icons.arrow_right),
                                                 color: const Color(0xFFcccccc),
                                                 onPressed: () {
+                                                  if (timeController.running ==
+                                                      true) {
+                                                    timeController._timer!
+                                                        .cancel();
+                                                  }
                                                   timeController
                                                           .remainingSeconds =
                                                       taskData.long_break * 60;
