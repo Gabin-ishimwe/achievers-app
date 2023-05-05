@@ -1,6 +1,7 @@
 import 'package:achievers_app/models/task_model.dart';
 import 'package:achievers_app/screens/session_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -312,12 +313,37 @@ class _CalendarPageState extends State<CalendarPage> {
                                           // add tasks for this hour
                                           ...tasks.map((task) => InkWell(
                                                 onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            TimerScreen()),
-                                                  );
+                                                  if (!task.completed) {
+                                                    Get.to(const TimerScreen(),
+                                                        arguments: {
+                                                          'taskId':
+                                                              task.id
+                                                        });
+                                                  } else {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Task completed'),
+                                                          content: Text(
+                                                              'You have completed this task.'),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              child: Text('OK'),
+                                                              onPressed: () {
+                                                                // Perform some action when the user presses the OK button.
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }
                                                 },
                                                 child: Container(
                                                   margin:
