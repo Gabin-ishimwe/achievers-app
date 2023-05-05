@@ -16,6 +16,7 @@
   <img src="./assets/readme/daily_task.png" width="100" />
   <img src="./assets/readme/session_time.png" width="100" />
   <img src="./assets/readme/edit_profile.png" width="100" />
+  <img src="./assets/readme/jailbreak2.jpg" width="100" />
 
 </p>
 
