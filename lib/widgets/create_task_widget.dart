@@ -1,5 +1,6 @@
 import "package:achievers_app/helpers/notification.dart";
 import "package:achievers_app/models/task_model.dart";
+import "package:achievers_app/screens/home_screen.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -39,7 +40,6 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   DateTime _selectedDate = DateTime.now();
   TextEditingController? timeController = TextEditingController();
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
-
 
   final List<Map<String, dynamic>> _items = [
     {'value': 'code', 'label': 'Code'},
@@ -591,14 +591,15 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
         .catchError((err) => {throw err});
 
     var formattedT = formatTime(task.start_time);
-    var time = DateFormat.jm()
-        .format(DateTime.parse('${task.date} ${formattedT}'));
+    var time =
+        DateFormat.jm().format(DateTime.parse('${task.date} ${formattedT}'));
     NotificationClass.showScheduledNotification(
       title: 'Achievers app task reminder',
       body: '$time: It\'s time to start "${task.title}"',
       payload_data: docTask.id,
       scheduledDate: DateTime.parse('${task.date} ${formattedT}'),
     );
+    Get.to(const HomeScreen());
   }
 
   _getDateFromUser() async {
@@ -643,21 +644,20 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   String formatTime(String timeString) {
     DateTime parsedTime = DateFormat.jm().parse(
         timeString); // Parse the time string using Flutter's DateFormat class
-    String formattedTime = DateFormat.Hm().format(
-        parsedTime); // Format the parsed time string in 24-hour format
+    String formattedTime = DateFormat.Hm()
+        .format(parsedTime); // Format the parsed time string in 24-hour format
 
     return formattedTime;
   }
 
   String formatDateW(DateTime datesel) {
+    // Create a formatter that will format the DateTime object to the desired output format
+    DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  // Create a formatter that will format the DateTime object to the desired output format
-  DateFormat formatter = DateFormat('yyyy-MM-dd');
+    // Format the DateTime object to a string in the desired output format
+    String formattedDate = formatter.format(datesel);
 
-  // Format the DateTime object to a string in the desired output format
-  String formattedDate = formatter.format(datesel);
-
-  // Return the formatted string
-  return formattedDate;
-}
+    // Return the formatted string
+    return formattedDate;
+  }
 }
