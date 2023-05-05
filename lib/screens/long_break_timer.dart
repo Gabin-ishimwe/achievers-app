@@ -157,7 +157,7 @@ class _LongBreakTimerScreen extends State<LongBreakTimerScreen> {
                     );
                   }
                   return Container(
-                      height: 580, // Set a fixed height
+                      height: 600, // Set a fixed height
                       margin: const EdgeInsets.fromLTRB(18, 10, 15, 0),
                       width: MediaQuery.of(context).size.width,
                       child: Column(children: [

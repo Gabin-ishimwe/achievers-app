@@ -362,12 +362,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   width: 150,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      // UserModel userModel = UserModel(
-                                      //     id: widget.id,
-                                      //     fullName: fullNameController.text,
-                                      //     email: emailController.text);
-                                      // await UserRepository()
-                                      //     .updateUser(userModel);
                                       _updateUser();
                                       Navigator.push(
                                           context,
