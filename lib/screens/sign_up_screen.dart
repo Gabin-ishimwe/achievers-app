@@ -83,6 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 40,
                   ),
                   TextFormField(
+                    key: const Key("name_key"),
                     controller: name,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
@@ -110,6 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    key: const Key("email_key"),
                     controller: emailController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
@@ -140,6 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 20,
                   ),
                   TextFormField(
+                    key: const Key("password_key"),
                     obscureText: true,
                     controller: passwordController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,

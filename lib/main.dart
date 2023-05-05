@@ -2,6 +2,7 @@ import 'package:achievers_app/firebase_options.dart';
 import 'package:achievers_app/helpers/notification.dart';
 import 'package:achievers_app/screens/long_break_timer.dart';
 import 'package:achievers_app/screens/session_timer.dart';
+import 'package:achievers_app/screens/sign_in_screen.dart';
 import 'package:achievers_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +15,20 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
+  // bool isJailbroken = await FlutterJailbreakDetection.jailbroken;
 
-  if (isJailbroken) {
-    print("This app cannot run on a jailbroken device.");
-    runApp(const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text(
-              "This app cannot run on a Jailbroken or rooted devices have more privileges and enable easy installation of malware and viruses."),
-        ),
-      ),
-    ));
-    return;
-  }
+  // if (isJailbroken) {
+  //   print("This app cannot run on a jailbroken device.");
+  //   runApp(const MaterialApp(
+  //     home: Scaffold(
+  //       body: Center(
+  //         child: Text(
+  //             "This app cannot run on a Jailbroken or rooted devices have more privileges and enable easy installation of malware and viruses."),
+  //       ),
+  //     ),
+  //   ));
+  //   return;
+  // }
   runApp(const MyApp());
 }
 
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-      home: const SplashScreen(),
+      home: const SignInScreen(),
     );
   }
 }

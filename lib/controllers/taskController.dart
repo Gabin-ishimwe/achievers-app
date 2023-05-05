@@ -19,7 +19,7 @@ class TaskController {
 
   static final _db = FirebaseFirestore.instance;
   static Future<Task?> getSingleTask(id) async {
-    final snapshot = await _db.collection("TasksTest").doc(id).get();
+    final snapshot = await _db.collection("tasks").doc(id).get();
     if (!snapshot.exists) {
       return null;
     }
@@ -30,7 +30,7 @@ class TaskController {
   }
 
   static updateTask(id, update) async {
-    DocumentReference docRef  = await _db.collection("TasksTest").doc(id);
+    DocumentReference docRef  = await _db.collection("tasks").doc(id);
     docRef.update(update).then((value) => print("Property updated successfully!")).catchError((error) => print("Failed to update property: $error"));
   }
 }

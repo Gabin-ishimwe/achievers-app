@@ -241,14 +241,14 @@ class _CalendarPageState extends State<CalendarPage> {
                           for (int i = 0; i < todos!.length; i++) {
                             print(todos[i].date);
                             DateTime format =
-                                DateFormat('dd/MM/yyyy').parse(todos[i].date);
+                                DateFormat('yyyy-MM-dd').parse(todos[i].date);
                             print(format);
                             // DateTime date = DateTime.parse(todos[i].date);
                             // print(date);
                             DateTime taskDate =
-                                DateFormat("MM/dd/yyyy").parse(todos[i].date);
-                            if (DateFormat('MM/dd/yyyy').format(taskDate) !=
-                                DateFormat('MM/dd/yyyy')
+                                DateFormat("yyyy-MM-dd").parse(todos[i].date);
+                            if (DateFormat('yyyy-MM-dd').format(taskDate) !=
+                                DateFormat('yyyy-MM-dd')
                                     .format(_selectedDate)) {
                               continue;
                             }

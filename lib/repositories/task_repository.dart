@@ -21,7 +21,7 @@ class Db {
 
   static final _db = FirebaseFirestore.instance;
   static Future<List<Task>> allTasks() async {
-    final snapshot = await _db.collection("userTasks").get();
+    final snapshot = await _db.collection("tasks").get();
     var taskData =
         snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
 
@@ -57,6 +57,30 @@ class Db {
         .toList();
   }
 
+  static Future<List<Task>> filterTasks(propertyName, propertyValue) async {
+    final snapshot = await _db.collection("tasks").where(propertyName, isEqualTo: propertyValue).get();
+    var taskData =
+        snapshot.docs.map((task) => Task.fromSnapshot(task)).toList();
+
+    taskData = getTasks(taskData);
+    print(taskData);
+    return taskData;
+  }
+
+  static Future<HomeVariable> getHomeVariables() async {
+    var tasks =  await allTasks();
+    var completed = await filterTasks('completed', true);
+    final nbr_of_tasks = tasks.length;
+    final nbr_of_completed_tasks = completed.length;
+
+    final percentage = (nbr_of_completed_tasks/nbr_of_tasks) * 100;
+
+    final vars = HomeVariable(percentage: percentage, totalTasks: nbr_of_tasks, completed: nbr_of_completed_tasks); 
+
+    return vars;
+  
+  }
+
   static List<Task> getTasks(List<Task> theTasks) {
     var newAsksArray = theTasks.map((Task task) {
       task.color = categories[task.category]!["color"];
@@ -76,4 +100,13 @@ class Day {
 
   @override
   String toString() => "$name: $completed";
+}
+
+class HomeVariable {
+  final double percentage;
+  final int completed;
+  final int totalTasks;
+
+  HomeVariable({required this.percentage, required this.completed, required this.totalTasks });
+
 }
